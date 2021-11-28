@@ -1,0 +1,12 @@
+{    
+    "Generate DocMachine documentation" : { 
+       
+      "prefix": "/dm", 
+       
+      "body": [  
+        "/**", 
+        " */"
+      ],
+      "description": "DocMachine comment"
+    }
+}

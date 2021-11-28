@@ -10,15 +10,14 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:docmachine.helloWorld"
+    "onLanguage:c"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "docmachine.helloWorld",
-        "title": "Hello World"
-      }
+    "snippets": [
+        {
+            "path": "./snippets.code-snippets"
+        }
     ]
   },
   "scripts": {
