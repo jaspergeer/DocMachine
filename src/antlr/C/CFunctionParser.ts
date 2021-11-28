@@ -19,6 +19,12 @@ export class CFunctionParser implements FunctionParser {
     private returnType: string = "";
     private exceptions: string[] = [];
 
+    /**
+     * Create a new CFunctionParser and parse the given stream of characters to extract function
+     * signature information if possible
+     * @param chars stream of characters to parse
+     * @returns new CFunctionParser
+     */
     constructor(chars: CharStream) {
         this.visitor = new CFunctionVisitor();
         let thisChar: number = chars.LA(1);

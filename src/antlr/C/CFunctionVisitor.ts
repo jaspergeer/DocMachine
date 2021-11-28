@@ -9,6 +9,11 @@ import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor
 import { CompilationUnitContext, DeclaratorContext, DirectDeclaratorContext, ExternalDeclarationContext, FunctionDefinitionContext, ParameterDeclarationContext, ParameterListContext, ParameterTypeListContext, TranslationUnitContext } from "../../antlr/C/CParser";
 
 export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> implements CVisitor<FunctionData> {
+
+    /**
+     * Get the default result of navigating a parse tree with this vistior
+     * @returns a FunctionData with empty initialized fields
+     */
     protected defaultResult(): FunctionData {
         return {
             paramNames: [],
@@ -17,6 +22,11 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         };
     }
 
+    /**
+     * Visit a compilation unit
+     * @param ctx the current node in the parse tree
+     * @returns data from a function definition subnode if it exists otherwise default result
+     */
     visitCompilationUnit(ctx: CompilationUnitContext): FunctionData  {
         if (ctx.translationUnit()) {
             return this.visitTranslationUnit(ctx.translationUnit()!);
@@ -24,6 +34,11 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return this.defaultResult();
     }
 
+    /**
+     * Visit a translation unit
+     * @param ctx the current node in the parse tree
+     * @returns data from a function definition subnode if it exists otherwise default result
+     */
     visitTranslationUnit (ctx: TranslationUnitContext): FunctionData {
         if (ctx.externalDeclaration()[0]) {
             return this.visitExternalDeclaration(ctx.externalDeclaration()[0]!);
@@ -31,6 +46,11 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return this.defaultResult();
     }
 
+    /**
+     * Visit an external declaration
+     * @param ctx the current node in the parse tree
+     * @returns data from a function definition subnode if it exists otherwise default result
+     */
     visitExternalDeclaration (ctx: ExternalDeclarationContext): FunctionData {
         if (ctx.functionDefinition()) {
             return this.visitFunctionDefinition(ctx.functionDefinition()!);
@@ -38,13 +58,13 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return this.defaultResult();
     }
 
+    /**
+     * Visit a function definition and extract function data
+     * @param ctx the current node in the parse tree
+     * @returns FunctionData containing parameter names and return type of function
+     */
     visitFunctionDefinition(ctx: FunctionDefinitionContext): FunctionData {
-        console.log();
-        let result: FunctionData = {
-            paramNames: [],
-            returnType: "",
-            exceptions: []
-        };
+        let result: FunctionData = this.defaultResult();
         if (ctx.declarator()) {
             result = this.visit(ctx.declarator());
         }
@@ -57,6 +77,11 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return result;
     }
 
+    /**
+     * Visit a declarator
+     * @param ctx current node in the parse tree
+     * @returns FunctionData containing parameter names if they exist oherwise default result
+     */
     visitDeclarator(ctx: DeclaratorContext): FunctionData {
         if (ctx.directDeclarator()) {
             return this.visitDirectDeclarator(ctx.directDeclarator());
@@ -80,6 +105,11 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return this.defaultResult();
     }
 
+    /**
+     * Visit a parameter type list
+     * @param ctx current node in parse tree
+     * @returns FunctionData containing parameter names if they exist oherwise default result
+     */
     visitParameterTypeList (ctx: ParameterTypeListContext): FunctionData {
         if (ctx.parameterList()) {
             return this.visitParameterList(ctx.parameterList());
@@ -87,18 +117,24 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return this.defaultResult();
     }
 
+    /**
+     * Visit a parameter list and extract name of each parameter
+     * @param ctx current node in parse tree
+     * @returns FunctionData containing parameter names
+     */
     visitParameterList(ctx: ParameterListContext): FunctionData {
-        let result: FunctionData = {
-            paramNames: [],
-            returnType: "",
-            exceptions: []
-        };
+        let result: FunctionData = this.defaultResult();
         for (let dcl of ctx.parameterDeclaration()) {
             result.paramNames.push(this.visitParameterDeclaration(dcl).paramNames[0]);
         }
         return result;
     }
 
+    /**
+     * Visit a parameter declaration and get the name of the parameter
+     * @param ctx current node in parse tree
+     * @returns FunctionData containing the name of this parameter
+     */
     visitParameterDeclaration(ctx: ParameterDeclarationContext): FunctionData {
         if (ctx.declarator()) {
             return {

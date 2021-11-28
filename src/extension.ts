@@ -79,38 +79,54 @@ export function deactivate() {}
  * @returns formatted function contract
  */
 function generateFunctionContract(fparser: FunctionParser, offset: number): string {
+    let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("docmachine.contracts");
     let result: string = generateSpaces(offset) + " * @brief \n";
     result += generateSpaces(offset) + " * \n";
     for (let param of fparser.getParamNames()) {
         result += generateSpaces(offset);
-        result += " * @param " + param + "\n";
+        result += " * " + config.get("paramPrefix") + param + "\n";
     }
     if (fparser.getReturnType()) {
         result += generateSpaces(offset);
-        result += " * @returns " + fparser.getReturnType() + "\n";
+        result += " * " + config.get("returnPrefix") + fparser.getReturnType() + "\n";
     }
     for (let except of fparser.getExceptions()) {
         result += generateSpaces(offset);
-        result += " * @throw " + except + "\n";
+        result += " * " + config.get("exceptPrefix") + except + "\n";
     }
     return result;
 }
 
 /**
- * Created a formatted file header
+ * Create a formatted file header
  * @returns formatted file header
  */
 function generateFileHeader(document: vscode.TextDocument): string {
+    let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("docmachine.headers");
     let result: string = "";
     let filePath: string[] = document.fileName.split("/");
-    result += " * @file " + filePath[filePath.length - 1] + "\n";
-    result += " * @author insert name\n";
-    result += " * @brief \n";
+    if (config.get("fileToggle")) {
+        result += " * " + config.get("filePrefix") + filePath[filePath.length - 1] + "\n";
+    }
+    if (config.get("authorToggle")) {
+        result += " * " + config.get("authorPrefix") + "\n";
+    }
+    if (config.get("descToggle")) {
+        result += " * " + config.get("descPrefix") + "\n";
+    }
+    if (config.get("versionToggle")) {
+        result += " * " + config.get("versionPrefix") + "\n";
+    }
     let date: Date = new Date();
-    result += " * @date " + date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + "\n";
-    result += " * \n";
-    result += " * @copyright Copyright (c) " + date.getFullYear() + "\n";
-    result += " * \n";
+    if (config.get("dateToggle")) {
+        result += " * " + config.get("datePrefix") + date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + "\n";
+    }
+    if (config.get("copyrightToggle")) {
+        result += " * " + config.get("copyrightPrefix") + date.getFullYear() + "\n";
+    }
+    if (config.get("licenseToggle")) {
+        result += " * " + config.get("license") + "\n";
+    }
     return result;
 }
 

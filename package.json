@@ -19,7 +19,102 @@
         {
             "path": "./snippets.code-snippets"
         }
-    ]
+    ],
+    "configuration": {
+        "title": "DocMachine",
+        "properties": {
+            "docmachine.contracts.descPrefix": {
+                "type": "string",
+                "default": "@brief ",
+                "description": "Text placed before function description."
+            },
+            "docmachine.contracts.paramPrefix": {
+                "type": "string",
+                "default": "@param ",
+                "description": "Text placed before each parameter name."
+            },
+            "docmachine.contracts.returnPrefix": {
+                "type": "string",
+                "default": "@returns ",
+                "description": "Text placed before return type."
+            },
+            "docmachine.contracts.exceptPrefix": {
+                "type": "string",
+                "default": "@throws ",
+                "description": "Text placed before each exception type."
+            },
+            "docmachine.headers.filePrefix": {
+                "type": "string",
+                "default": "@file ",
+                "description": "Text placed before filename."
+            },
+            "docmachine.headers.fileToggle": {
+                "type": "boolean",
+                "default": true,
+                "description": "Toggle the filename header block."
+            },
+            "docmachine.headers.authorPrefix": {
+                "type": "string",
+                "default": "@author your name",
+                "description": "Text placed before author name."
+            },
+            "docmachine.headers.authorToggle": {
+                "type": "boolean",
+                "default": true,
+                "description": "Toggle the author header block."
+            },
+            "docmachine.headers.descPrefix": {
+                "type": "string",
+                "default": "@brief file description",
+                "description": "Text placed before file description."
+            },
+            "docmachine.headers.descToggle": {
+                "type": "boolean",
+                "default": true,
+                "description": "Toggle the description header block."
+            },
+            "docmachine.headers.versionPrefix": {
+                "type": "string",
+                "default": "@version 0.1",
+                "description": "Text placed before version number."
+            },
+            "docmachine.headers.versionToggle": {
+                "type": "boolean",
+                "default": true,
+                "description": "Toggle the version number header block."
+            },
+            "docmachine.headers.datePrefix": {
+                "type": "string",
+                "default": "@date ",
+                "description": "Text placed before date."
+            },
+            "docmachine.headers.dateToggle": {
+                "type": "boolean",
+                "default": true,
+                "description": "Toggle the date header block."
+            },
+            "docmachine.headers.copyrightPrefix": {
+                "type": "string",
+                "default": "@copyright Copyright (c) ",
+                "description": "Text placed before copyright."
+            },
+            "docmachine.headers.copyrightToggle": {
+                "type": "boolean",
+                "default": true,
+                "description": "Toggle the copyright header block."
+            },
+            "docmachine.headers.license": {
+                "type": "string",
+                "default": "Licensed under the XYZ license.",
+                "description": "License information."
+            },
+            "docmachine.headers.licenseToggle": {
+                "type": "boolean",
+                "default": true,
+                "description": "Toggle the license header block."
+            }
+        }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
