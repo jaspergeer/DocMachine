@@ -1,4 +1,5 @@
 import { CharStream, CharStreams } from 'antlr4ts';
+import { EOF } from 'dns';
 import * as vscode from 'vscode';
 import { CFunctionParser } from './antlr/C/CFunctionParser';
 import { FunctionParser, FunctionParserConstructor } from './FunctionParser';
@@ -29,29 +30,36 @@ export function activate(context: vscode.ExtensionContext): void {
                 let ctor: FunctionParserConstructor | undefined = funcParsers.get(langId);
                 if (ctor) {
                     let bodyPos: vscode.Position = change.range.start.translate(1, 0);
-                    let documentation: string;
+                    console.log(change.range.start);
+                    console.log(bodyPos);
+
                     /* if we are at the top line of the file insert a header */
                     if (bodyPos.line === 1) {
-                        documentation = generateFileHeader();
+                    /* insert the file header */
+                    editor.edit(editBuilder => {
+                        editBuilder.insert(bodyPos, generateFileHeader());
+                    });
+
                     /* if we are not at the top line insert a function contract */
                     } else {
                         let range: vscode.Range = document.validateRange(
-                            new vscode.Range(change.range.end,
+                            new vscode.Range(change.range.end.translate(0,1),
                             change.range.end.translate(document.lineCount)));
                         /* 
                          * get the text beginning at the function declaration to the end of the
                          * file and pass it to the function parser
                          */
                         let toParse: string = document.getText(range);
+                        console.log(toParse);
                         let fparser: FunctionParser = createFunctionParser(ctor, 
                             CharStreams.fromString(toParse));
-                        documentation = generateFunctionContract(fparser, 
-                            bodyPos.character);
+                        /* insert the documentation */
+                        editor.edit(editBuilder => {
+                            editBuilder.insert(new vscode.Position(bodyPos.line, 0), "\n");
+                            editBuilder.insert(new vscode.Position(bodyPos.line, 0), generateFunctionContract(fparser, 
+                                bodyPos.character));
+                        });
                     }
-                    /* insert the documentation */
-                    editor.edit(editBuilder => {
-                        editBuilder.insert(bodyPos, documentation);
-                    });
                 }
             }
         }
@@ -67,7 +75,7 @@ export function deactivate() {}
  * @returns formatted function contract
  */
 function generateFunctionContract(fparser: FunctionParser, offset: number): string {
-    let result: string = "\n * \n";
+    let result: string = getSpaces(offset) + " * @brief \n";
     for (let param of fparser.getParamNames()) {
         result += getSpaces(offset);
         result += " * @param " + param + "\n";
