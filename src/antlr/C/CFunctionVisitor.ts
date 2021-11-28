@@ -34,6 +34,7 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     }
 
     visitFunctionDefinition(ctx: FunctionDefinitionContext): FunctionData {
+        console.log();
         let result: FunctionData = {
             paramNames: [],
             returnType: "",
@@ -42,14 +43,18 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         if (ctx.declarator()) {
             result = this.visit(ctx.declarator());
         }
+        if (ctx.declarationSpecifiers()) {
+            result.returnType = ctx.declarationSpecifiers()!.text;
+            if (result.returnType === "void") {
+                result.returnType = "";
+            }
+        }
         return result;
     }
 
     visitDeclarator(ctx: DeclaratorContext): FunctionData {
         if (ctx.directDeclarator()) {
             return this.visitDirectDeclarator(ctx.directDeclarator());
-        } else if (ctx.pointer()) {
-            console.log(ctx.pointer()?.text);
         }
         return this.defaultResult();
     };
@@ -78,7 +83,6 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     }
 
     visitParameterList(ctx: ParameterListContext): FunctionData {
-        console.log(ctx.text);
         let result: FunctionData = {
             paramNames: [],
             returnType: "",
@@ -91,7 +95,6 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     }
 
     visitParameterDeclaration(ctx: ParameterDeclarationContext): FunctionData {
-        console.log(ctx.declarator()!.text);
         if (ctx.declarator()) {
             return {
                 paramNames: [ctx.declarator()!.text],

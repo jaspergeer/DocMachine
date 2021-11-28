@@ -73,6 +73,7 @@ export function deactivate() {}
  */
 function generateFunctionContract(fparser: FunctionParser, offset: number): string {
     let result: string = generateSpaces(offset) + " * @brief \n";
+    result += generateSpaces(offset) + " *\n";
     for (let param of fparser.getParamNames()) {
         result += generateSpaces(offset);
         result += " * @param " + param + "\n";
