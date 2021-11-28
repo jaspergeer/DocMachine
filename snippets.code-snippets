@@ -4,8 +4,7 @@
       "prefix": "/dm", 
        
       "body": [  
-        "/**", 
-        " */"
+        "/**"
       ],
       "description": "DocMachine comment"
     }

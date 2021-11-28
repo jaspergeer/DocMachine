@@ -1,16 +1,23 @@
 import { CharStream } from 'antlr4ts';
 
-export abstract class FunctionParser {
+export interface FunctionParserConstructor {
+    new (chars: CharStream): FunctionParser;
+}
 
-    chars: CharStream;
+export interface FunctionParser {
 
-    constructor(chars: CharStream) {
-        this.chars = chars;
-    }
+    /**
+     * @returns names of function parameters in order
+     */
+    getParamNames(): string[];
 
-    abstract getParamNames: () => string[];
+    /**
+     * @returns return type of function
+     */
+    getReturnType(): string;
 
-    abstract getReturnType: () => string;
-
-    abstract getExceptions: () => string[];
+    /**
+     * @returns exception types thrown in function in order
+     */
+    getExceptions(): string[];
 }
