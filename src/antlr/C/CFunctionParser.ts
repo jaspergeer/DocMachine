@@ -1,6 +1,5 @@
-import { CharStream, CharStreams, CommonTokenStream, NoViableAltException } from "antlr4ts";
+import { CharStream, CharStreams, CommonTokenStream } from "antlr4ts";
 import { ParseTree } from "antlr4ts/tree/ParseTree";
-import { EOF } from "dns";
 import { FunctionParser } from "../../FunctionParser";
 import { DMErrorStrategy } from "../DMErrorStrategy";
 import { FunctionData } from "../FunctionData";
@@ -19,10 +18,12 @@ export class CFunctionParser implements FunctionParser {
         this.visitor = new CFunctionVisitor();
         let thisChar: number = chars.LA(1);
         let funcStr: string = "";
-        /* don't parse if this is a comment or incorrectly formatted */
+        
+        /* don't parse if this is a comment or an invalid beginning of a function signature */
         if (thisChar === " ".charCodeAt(0) || thisChar === "/".charCodeAt(0) || thisChar === "\n".charCodeAt(0)) {
             return;
         }
+
         /* we only pass the function signature to the parser */
         while (thisChar !== ")".charCodeAt(0)) {
             /* function signatures should not contain these characters */
@@ -34,12 +35,16 @@ export class CFunctionParser implements FunctionParser {
             thisChar = chars.LA(1);
         }
         funcStr += ")";
+
+        /* parse the function signature */
         chars = CharStreams.fromString(funcStr);
         let lexer = new CLexer(chars);
         let tokens = new CommonTokenStream(lexer);
         let parser = new CParser(tokens);
         let errorStrategy = new DMErrorStrategy();
         parser.errorHandler = errorStrategy;
+
+        /* only extract data if this is a valid function signature */
         if (!errorStrategy.foundInvalidText()) {
             this.tree = parser.compilationUnit();
             let result: FunctionData = this.visitor.visit(this.tree);
@@ -48,12 +53,15 @@ export class CFunctionParser implements FunctionParser {
             this.exceptions = result.exceptions;
         }
     }
+
     getParamNames(): string[] {
         return this.paramNames;
     }
+
     getReturnType(): string {
         return this.returnType;
     }
+
     getExceptions(): string[] {
         return this.exceptions;
     }

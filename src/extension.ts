@@ -16,7 +16,10 @@ export function activate(context: vscode.ExtensionContext): void {
      * supported language
      */
     let funcParsers = new Map<string, FunctionParserConstructor>();
+    
+    /* currently supported languages: c, c++ */
     funcParsers.set("c", CFunctionParser);
+    funcParsers.set("cpp", CFunctionParser);
 
     vscode.workspace.onDidChangeTextDocument(changeEvent => {
         let change: vscode.TextDocumentContentChangeEvent = changeEvent.contentChanges[0];
@@ -36,7 +39,7 @@ export function activate(context: vscode.ExtensionContext): void {
                     /* if we are at the top line of the file insert a header */
                     if (bodyPos.line === 1) {
                     /* create the file header */
-                    documentation = generateFileHeader();
+                    documentation = generateFileHeader(document);
 
                     /* if we are not at the top line insert a function contract */
                     } else {
@@ -73,7 +76,7 @@ export function deactivate() {}
  */
 function generateFunctionContract(fparser: FunctionParser, offset: number): string {
     let result: string = generateSpaces(offset) + " * @brief \n";
-    result += generateSpaces(offset) + " *\n";
+    result += generateSpaces(offset) + " * \n";
     for (let param of fparser.getParamNames()) {
         result += generateSpaces(offset);
         result += " * @param " + param + "\n";
@@ -93,9 +96,18 @@ function generateFunctionContract(fparser: FunctionParser, offset: number): stri
  * Created a formatted file header
  * @returns formatted file header
  */
-function generateFileHeader(): string {
-    // TODO implement this
-    return " placeholder header";
+function generateFileHeader(document: vscode.TextDocument): string {
+    let result: string = "";
+    let filePath: string[] = document.fileName.split("/");
+    result += " * @file " + filePath[filePath.length - 1] + "\n";
+    result += " * @author insert name\n";
+    result += " * @brief \n";
+    let date: Date = new Date();
+    result += " * @date " + date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + "\n";
+    result += " * \n";
+    result += " * @copyright Copyright (c) " + date.getFullYear() + "\n";
+    result += " * \n";
+    return result;
 }
 
 /**
