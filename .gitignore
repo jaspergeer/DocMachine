@@ -178,3 +178,6 @@ dist
 
 # Output Directory
 out/*
+
+# Test Directory
+Src/test/*
