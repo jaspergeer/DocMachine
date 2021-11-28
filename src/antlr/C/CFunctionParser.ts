@@ -1,36 +1,47 @@
-import { CharStream, CommonTokenStream } from "antlr4ts";
+import { ANTLRErrorListener, CharStream, CommonTokenStream, NoViableAltException } from "antlr4ts";
 import { ParseTree } from "antlr4ts/tree/ParseTree";
 import { FunctionParser } from "../../FunctionParser";
+import { DMErrorStrategy } from "../DMErrorStrategy";
+import { FunctionData } from "../FunctionData";
 import { CFunctionVisitor } from "./CFunctionVisitor";
 import { CLexer } from "./CLexer";
-import { CParser, FunctionDefinitionContext } from "./CParser";
-import { CVisitor } from "./CVisitor";
+import { CParser } from "./CParser";
 
 export class CFunctionParser implements FunctionParser {
-    private chars: CharStream;
-    private lexer: CLexer;
-    private tokens: CommonTokenStream;
-    private parser: CParser;
+    private tree: ParseTree | null;
     private visitor: CFunctionVisitor;
-    private tree: ParseTree;
+    private paramNames: string[];
+    private returnType: string;
+    private exceptions: string[];
 
     constructor(chars: CharStream) {
-        this.chars = chars;
-        this.lexer = new CLexer(chars);
-        this.tokens = new CommonTokenStream(this.lexer);
-        this.parser = new CParser(this.tokens);
         this.visitor = new CFunctionVisitor();
-        this.tree = this.parser.compilationUnit();
+        let lexer = new CLexer(chars);
+        let tokens = new CommonTokenStream(lexer);
+        let parser = new CParser(tokens);
+        let errorStrategy = new DMErrorStrategy();
+        parser.errorHandler = errorStrategy;
+        if (errorStrategy.foundInvalidText()) {
+            this.tree = null;
+            this.paramNames = [];
+            this.returnType = "";
+            this.exceptions = [];
+        } else {
+            this.tree = parser.compilationUnit();
+            let result: FunctionData = this.visitor.visit(this.tree);
+            this.paramNames = result.paramNames;
+            this.returnType = result.returnType;
+            this.exceptions = result.exceptions;
+        }
     }
     getParamNames(): string[] {
-        return this.visitor.visit(this.tree).paramNames;
+        return this.paramNames;
     }
     getReturnType(): string {
-        let result = this.visitor.visit(this.tree);
-        return result.returnType;
+        return this.returnType;
     }
     getExceptions(): string[] {
-        return this.visitor.visit(this.tree).exceptions;
+        return this.exceptions;
     }
     
 }

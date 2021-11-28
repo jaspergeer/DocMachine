@@ -1,11 +1,7 @@
-import { ErrorNode } from "antlr4ts/tree/ErrorNode";
-import { ParseTree } from "antlr4ts/tree/ParseTree";
-import { RuleNode } from "antlr4ts/tree/RuleNode";
-import { TerminalNode } from "antlr4ts/tree/TerminalNode";
 import { FunctionData } from "../FunctionData";
 import { CVisitor } from "./CVisitor";
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor'
-import { CompilationUnitContext, DeclaratorContext, DirectDeclaratorContext, ExternalDeclarationContext, FunctionDefinitionContext, ParameterDeclarationContext, ParameterTypeListContext, TranslationUnitContext } from "./CParser";
+import { CompilationUnitContext, DeclaratorContext, DirectDeclaratorContext, ExternalDeclarationContext, FunctionDefinitionContext, ParameterDeclarationContext, ParameterListContext, ParameterTypeListContext, TranslationUnitContext } from "./CParser";
 
 export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> implements CVisitor<FunctionData> {
     protected defaultResult(): FunctionData {
@@ -13,17 +9,6 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
             paramNames: [],
             returnType: "",
             exceptions: []
-        };
-    }
-
-    visitFunctionDefinition(ctx: FunctionDefinitionContext): FunctionData {
-        if (ctx.declarator()) {
-            this.visit(ctx.declarator());
-        }
-        return {
-            paramNames: ["snake"],
-            returnType: "void",
-            exceptions: ["boo"]
         };
     }
 
@@ -48,22 +33,72 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return this.defaultResult();
     }
 
+    visitFunctionDefinition(ctx: FunctionDefinitionContext): FunctionData {
+        let result: FunctionData = {
+            paramNames: [],
+            returnType: "",
+            exceptions: []
+        };
+        if (ctx.declarator()) {
+            result = this.visit(ctx.declarator());
+        }
+        return result;
+    }
+
     visitDeclarator(ctx: DeclaratorContext): FunctionData {
         if (ctx.directDeclarator()) {
             return this.visitDirectDeclarator(ctx.directDeclarator());
+        } else if (ctx.pointer()) {
+            console.log(ctx.pointer()?.text);
         }
         return this.defaultResult();
     };
 
     visitDirectDeclarator (ctx: DirectDeclaratorContext): FunctionData {
+        /* if we have a list of parameters, parse the list */
         if (ctx.parameterTypeList()) {
             return this.visitParameterTypeList(ctx.parameterTypeList()!);
+        
+        /* if we have a single parameter get its name */
+        } else if (ctx.directDeclarator()) {
+            return {
+                paramNames: [ctx.directDeclarator()!.text],
+                returnType: "",
+                exceptions: []
+            };
         }
         return this.defaultResult();
     }
 
     visitParameterTypeList (ctx: ParameterTypeListContext): FunctionData {
-        console.log(ctx.text);
+        if (ctx.parameterList()) {
+            return this.visitParameterList(ctx.parameterList());
+        }
         return this.defaultResult();
     }
+
+    visitParameterList(ctx: ParameterListContext): FunctionData {
+        console.log(ctx.text);
+        let result: FunctionData = {
+            paramNames: [],
+            returnType: "",
+            exceptions: []
+        };
+        for (let dcl of ctx.parameterDeclaration()) {
+            result.paramNames.push(this.visitParameterDeclaration(dcl).paramNames[0]);
+        }
+        return result;
+    }
+
+    visitParameterDeclaration(ctx: ParameterDeclarationContext): FunctionData {
+        console.log(ctx.declarator()!.text);
+        if (ctx.declarator()) {
+            return {
+                paramNames: [ctx.declarator()!.text],
+                returnType: "",
+                exceptions: []
+            };
+        }
+        return this.defaultResult();
+    };
 }

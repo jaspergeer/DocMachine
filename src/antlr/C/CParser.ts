@@ -5558,16 +5558,24 @@ export class CParser extends Parser {
 			this.declarator();
 			this.state = 1086;
 			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << CParser.T__0) | (1 << CParser.T__3) | (1 << CParser.T__4) | (1 << CParser.T__5) | (1 << CParser.T__6) | (1 << CParser.T__7) | (1 << CParser.T__8) | (1 << CParser.T__9) | (1 << CParser.T__11) | (1 << CParser.Auto) | (1 << CParser.Char) | (1 << CParser.Const) | (1 << CParser.Double) | (1 << CParser.Enum) | (1 << CParser.Extern) | (1 << CParser.Float) | (1 << CParser.Inline))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (CParser.Int - 32)) | (1 << (CParser.Long - 32)) | (1 << (CParser.Register - 32)) | (1 << (CParser.Restrict - 32)) | (1 << (CParser.Short - 32)) | (1 << (CParser.Signed - 32)) | (1 << (CParser.Static - 32)) | (1 << (CParser.Struct - 32)) | (1 << (CParser.Typedef - 32)) | (1 << (CParser.Union - 32)) | (1 << (CParser.Unsigned - 32)) | (1 << (CParser.Void - 32)) | (1 << (CParser.Volatile - 32)) | (1 << (CParser.Alignas - 32)) | (1 << (CParser.Atomic - 32)) | (1 << (CParser.Bool - 32)) | (1 << (CParser.Complex - 32)) | (1 << (CParser.Noreturn - 32)) | (1 << (CParser.StaticAssert - 32)) | (1 << (CParser.ThreadLocal - 32)))) !== 0) || _la === CParser.Identifier) {
+			switch ( this.interpreter.adaptivePredict(this._input, 135, this._ctx) ) {
+			case 1:
 				{
 				this.state = 1085;
 				this.declarationList();
 				}
+				break;
+			}
+			this.state = 1089;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === CParser.LeftBrace) {
+				{
+				this.state = 1088;
+				this.compoundStatement();
+				}
 			}
 
-			this.state = 1088;
-			this.compoundStatement();
 			}
 		}
 		catch (re) {
@@ -5588,24 +5596,30 @@ export class CParser extends Parser {
 	public declarationList(): DeclarationListContext {
 		let _localctx: DeclarationListContext = new DeclarationListContext(this._ctx, this.state);
 		this.enterRule(_localctx, 172, CParser.RULE_declarationList);
-		let _la: number;
 		try {
+			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1091;
+			this.state = 1092;
 			this._errHandler.sync(this);
-			_la = this._input.LA(1);
+			_alt = 1;
 			do {
-				{
-				{
-				this.state = 1090;
-				this.declaration();
+				switch (_alt) {
+				case 1:
+					{
+					{
+					this.state = 1091;
+					this.declaration();
+					}
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 				}
-				}
-				this.state = 1093;
+				this.state = 1094;
 				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << CParser.T__0) | (1 << CParser.T__3) | (1 << CParser.T__4) | (1 << CParser.T__5) | (1 << CParser.T__6) | (1 << CParser.T__7) | (1 << CParser.T__8) | (1 << CParser.T__9) | (1 << CParser.T__11) | (1 << CParser.Auto) | (1 << CParser.Char) | (1 << CParser.Const) | (1 << CParser.Double) | (1 << CParser.Enum) | (1 << CParser.Extern) | (1 << CParser.Float) | (1 << CParser.Inline))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (CParser.Int - 32)) | (1 << (CParser.Long - 32)) | (1 << (CParser.Register - 32)) | (1 << (CParser.Restrict - 32)) | (1 << (CParser.Short - 32)) | (1 << (CParser.Signed - 32)) | (1 << (CParser.Static - 32)) | (1 << (CParser.Struct - 32)) | (1 << (CParser.Typedef - 32)) | (1 << (CParser.Union - 32)) | (1 << (CParser.Unsigned - 32)) | (1 << (CParser.Void - 32)) | (1 << (CParser.Volatile - 32)) | (1 << (CParser.Alignas - 32)) | (1 << (CParser.Atomic - 32)) | (1 << (CParser.Bool - 32)) | (1 << (CParser.Complex - 32)) | (1 << (CParser.Noreturn - 32)) | (1 << (CParser.StaticAssert - 32)) | (1 << (CParser.ThreadLocal - 32)))) !== 0) || _la === CParser.Identifier);
+				_alt = this.interpreter.adaptivePredict(this._input, 137, this._ctx);
+			} while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
 			}
 		}
 		catch (re) {
@@ -5685,9 +5699,9 @@ export class CParser extends Parser {
 		return true;
 	}
 
-	private static readonly _serializedATNSegments: number = 2;
+	private static readonly _serializedATNSegments: number = 3;
 	private static readonly _serializedATNSegment0: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03x\u044A\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03x\u044B\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
 		"\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04" +
@@ -5784,21 +5798,21 @@ export class CParser extends Parser {
 		"R\x07R\u041B\nR\fR\x0ER\u041E\vR\x03S\x03S\x03S\x03S\x03S\x05S\u0425\n" +
 		"S\x03S\x03S\x05S\u0429\nS\x03S\x03S\x03T\x05T\u042E\nT\x03T\x03T\x03U" +
 		"\x06U\u0433\nU\rU\x0EU\u0434\x03V\x03V\x03V\x05V\u043A\nV\x03W\x05W\u043D" +
-		"\nW\x03W\x03W\x05W\u0441\nW\x03W\x03W\x03X\x06X\u0446\nX\rX\x0EX\u0447" +
-		"\x03X\x02\x02\x05@b~Y\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02" +
-		"\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x1E\x02 \x02" +
-		"\"\x02$\x02&\x02(\x02*\x02,\x02.\x020\x022\x024\x026\x028\x02:\x02<\x02" +
-		">\x02@\x02B\x02D\x02F\x02H\x02J\x02L\x02N\x02P\x02R\x02T\x02V\x02X\x02" +
-		"Z\x02\\\x02^\x02`\x02b\x02d\x02f\x02h\x02j\x02l\x02n\x02p\x02r\x02t\x02" +
-		"v\x02x\x02z\x02|\x02~\x02\x80\x02\x82\x02\x84\x02\x86\x02\x88\x02\x8A" +
-		"\x02\x8C\x02\x8E\x02\x90\x02\x92\x02\x94\x02\x96\x02\x98\x02\x9A\x02\x9C" +
-		"\x02\x9E\x02\xA0\x02\xA2\x02\xA4\x02\xA6\x02\xA8\x02\xAA\x02\xAC\x02\xAE" +
-		"\x02\x02\x19\x03\x02hi\x04\x02JJLL\x05\x02))JJLL\x04\x02))44\x07\x02I" +
-		"IKKMMPPUV\x03\x02MO\x04\x02IIKK\x03\x02GH\x03\x02CF\x03\x02fg\x03\x02" +
+		"\nW\x03W\x03W\x05W\u0441\nW\x03W\x05W\u0444\nW\x03X\x06X\u0447\nX\rX\x0E" +
+		"X\u0448\x03X\x02\x02\x05@b~Y\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02" +
+		"\x0E\x02\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x1E\x02" +
+		" \x02\"\x02$\x02&\x02(\x02*\x02,\x02.\x020\x022\x024\x026\x028\x02:\x02" +
+		"<\x02>\x02@\x02B\x02D\x02F\x02H\x02J\x02L\x02N\x02P\x02R\x02T\x02V\x02" +
+		"X\x02Z\x02\\\x02^\x02`\x02b\x02d\x02f\x02h\x02j\x02l\x02n\x02p\x02r\x02" +
+		"t\x02v\x02x\x02z\x02|\x02~\x02\x80\x02\x82\x02\x84\x02\x86\x02\x88\x02" +
+		"\x8A\x02\x8C\x02\x8E\x02\x90\x02\x92\x02\x94\x02\x96\x02\x98\x02\x9A\x02" +
+		"\x9C\x02\x9E\x02\xA0\x02\xA2\x02\xA4\x02\xA6\x02\xA8\x02\xAA\x02\xAC\x02" +
+		"\xAE\x02\x02\x19\x03\x02hi\x04\x02JJLL\x05\x02))JJLL\x04\x02))44\x07\x02" +
+		"IIKKMMPPUV\x03\x02MO\x04\x02IIKK\x03\x02GH\x03\x02CF\x03\x02fg\x03\x02" +
 		"[e\b\x02\x11\x11\x1C\x1C$$**--<<\n\x02\x06\b\x14\x14\x19\x19\x1D\x1D\"" +
 		"#\'(/067\x03\x02\x06\b\x04\x02++..\x06\x02\x15\x15%%1155\x05\x02\n\v!" +
 		"!::\x04\x02=>ZZ\x03\x02=>\x04\x02MMTT\x04\x02\r\r\x0F\x0F\x04\x02\x10" +
-		"\x1011\x04\x02\x12\x12\x16\x16\x02\u04A7\x02\xD1\x03\x02\x02\x02\x04\xD3" +
+		"\x1011\x04\x02\x12\x12\x16\x16\x02\u04A9\x02\xD1\x03\x02\x02\x02\x04\xD3" +
 		"\x03\x02\x02\x02\x06\xDA\x03\x02\x02\x02\b\xE4\x03\x02\x02\x02\n\xF7\x03" +
 		"\x02\x02\x02\f\u010A\x03\x02\x02\x02\x0E\u0115\x03\x02\x02\x02\x10\u0125" +
 		"\x03\x02\x02\x02\x12\u0131\x03\x02\x02\x02\x14\u0133\x03\x02\x02\x02\x16" +
@@ -5828,7 +5842,7 @@ export class CParser extends Parser {
 		"\x03\x02\x02\x02\x9E\u0409\x03\x02\x02\x02\xA0\u0413\x03\x02\x02\x02\xA2" +
 		"\u0417\x03\x02\x02\x02\xA4\u0428\x03\x02\x02\x02\xA6\u042D\x03\x02\x02" +
 		"\x02\xA8\u0432\x03\x02\x02\x02\xAA\u0439\x03\x02\x02\x02\xAC\u043C\x03" +
-		"\x02\x02\x02\xAE\u0445\x03\x02\x02\x02\xB0\xD2\x07k\x02\x02\xB1\xD2\x07" +
+		"\x02\x02\x02\xAE\u0446\x03\x02\x02\x02\xB0\xD2\x07k\x02\x02\xB1\xD2\x07" +
 		"l\x02\x02\xB2\xB4\x07n\x02\x02\xB3\xB2\x03\x02\x02\x02\xB4\xB5\x03\x02" +
 		"\x02\x02\xB5\xB3\x03\x02\x02\x02\xB5\xB6\x03\x02\x02\x02\xB6\xD2\x03\x02" +
 		"\x02\x02\xB7\xB8\x07=\x02\x02\xB8\xB9\x05.\x18\x02\xB9\xBA\x07>\x02\x02" +
@@ -5932,27 +5946,27 @@ export class CParser extends Parser {
 		"\x03\x02\x02\x02\u01A1\u01A2\x03\x02\x02\x02\u01A2\u01A3\x03\x02\x02\x02" +
 		"\u01A3\u01A4\x07Y\x02\x02\u01A4\u01A7\x03\x02\x02\x02\u01A5\u01A7\x05" +
 		"\x8CG\x02\u01A6\u019F\x03\x02\x02\x02\u01A6\u01A5\x03\x02\x02\x02\u01A7" +
-		"3\x03\x02\x02\x02\u01A8\u01AA\x058\x1D\x02\u01A9";
+		"3\x03\x02\x02\x02\u01A8\u01AA\x058";
 	private static readonly _serializedATNSegment1: string =
-		"\u01A8\x03\x02\x02\x02\u01AA\u01AB\x03\x02\x02\x02\u01AB\u01A9\x03\x02" +
-		"\x02\x02\u01AB\u01AC\x03\x02\x02\x02\u01AC5\x03\x02\x02\x02\u01AD\u01AF" +
-		"\x058\x1D\x02\u01AE\u01AD\x03\x02\x02\x02\u01AF\u01B0\x03\x02\x02\x02" +
-		"\u01B0\u01AE\x03\x02\x02\x02\u01B0\u01B1\x03\x02\x02\x02\u01B17\x03\x02" +
-		"\x02\x02\u01B2\u01B8\x05> \x02\u01B3\u01B8\x05@!\x02\u01B4\u01B8\x05Z" +
-		".\x02\u01B5\u01B8\x05\\/\x02\u01B6\u01B8\x05^0\x02\u01B7\u01B2\x03\x02" +
-		"\x02\x02\u01B7\u01B3\x03\x02\x02\x02\u01B7\u01B4\x03\x02\x02\x02\u01B7" +
-		"\u01B5\x03\x02\x02\x02\u01B7\u01B6\x03\x02\x02\x02\u01B89\x03\x02\x02" +
-		"\x02\u01B9\u01BE\x05<\x1F\x02\u01BA\u01BB\x07Z\x02\x02\u01BB\u01BD\x05" +
-		"<\x1F\x02\u01BC\u01BA\x03\x02\x02\x02\u01BD\u01C0\x03\x02\x02\x02\u01BE" +
-		"\u01BC\x03\x02\x02\x02\u01BE\u01BF\x03\x02\x02\x02\u01BF;\x03\x02\x02" +
-		"\x02\u01C0\u01BE\x03\x02\x02\x02\u01C1\u01C4\x05`1\x02\u01C2\u01C3\x07" +
-		"[\x02\x02\u01C3\u01C5\x05\x82B\x02\u01C4\u01C2\x03\x02\x02\x02\u01C4\u01C5" +
-		"\x03\x02\x02\x02\u01C5=\x03\x02\x02\x02\u01C6\u01C7\t\r\x02\x02\u01C7" +
-		"?\x03\x02\x02\x02\u01C8\u01C9\b!\x01\x02\u01C9\u01D8\t\x0E\x02\x02\u01CA" +
-		"\u01CB\x07\x03\x02\x02\u01CB\u01CC\x07=\x02\x02\u01CC\u01CD\t\x0F\x02" +
-		"\x02\u01CD\u01D8\x07>\x02\x02\u01CE\u01D8\x05X-\x02\u01CF\u01D8\x05B\"" +
-		"\x02\u01D0\u01D8\x05P)\x02\u01D1\u01D8\x05\x80A\x02\u01D2\u01D3\x07\t" +
-		"\x02\x02\u01D3\u01D4\x07=\x02\x02\u01D4\u01D5\x050\x19\x02\u01D5\u01D6" +
+		"\x1D\x02\u01A9\u01A8\x03\x02\x02\x02\u01AA\u01AB\x03\x02\x02\x02\u01AB" +
+		"\u01A9\x03\x02\x02\x02\u01AB\u01AC\x03\x02\x02\x02\u01AC5\x03\x02\x02" +
+		"\x02\u01AD\u01AF\x058\x1D\x02\u01AE\u01AD\x03\x02\x02\x02\u01AF\u01B0" +
+		"\x03\x02\x02\x02\u01B0\u01AE\x03\x02\x02\x02\u01B0\u01B1\x03\x02\x02\x02" +
+		"\u01B17\x03\x02\x02\x02\u01B2\u01B8\x05> \x02\u01B3\u01B8\x05@!\x02\u01B4" +
+		"\u01B8\x05Z.\x02\u01B5\u01B8\x05\\/\x02\u01B6\u01B8\x05^0\x02\u01B7\u01B2" +
+		"\x03\x02\x02\x02\u01B7\u01B3\x03\x02\x02\x02\u01B7\u01B4\x03\x02\x02\x02" +
+		"\u01B7\u01B5\x03\x02\x02\x02\u01B7\u01B6\x03\x02\x02\x02\u01B89\x03\x02" +
+		"\x02\x02\u01B9\u01BE\x05<\x1F\x02\u01BA\u01BB\x07Z\x02\x02\u01BB\u01BD" +
+		"\x05<\x1F\x02\u01BC\u01BA\x03\x02\x02\x02\u01BD\u01C0\x03\x02\x02\x02" +
+		"\u01BE\u01BC\x03\x02\x02\x02\u01BE\u01BF\x03\x02\x02\x02\u01BF;\x03\x02" +
+		"\x02\x02\u01C0\u01BE\x03\x02\x02\x02\u01C1\u01C4\x05`1\x02\u01C2\u01C3" +
+		"\x07[\x02\x02\u01C3\u01C5\x05\x82B\x02\u01C4\u01C2\x03\x02\x02\x02\u01C4" +
+		"\u01C5\x03\x02\x02\x02\u01C5=\x03\x02\x02\x02\u01C6\u01C7\t\r\x02\x02" +
+		"\u01C7?\x03\x02\x02\x02\u01C8\u01C9\b!\x01\x02\u01C9\u01D8\t\x0E\x02\x02" +
+		"\u01CA\u01CB\x07\x03\x02\x02\u01CB\u01CC\x07=\x02\x02\u01CC\u01CD\t\x0F" +
+		"\x02\x02\u01CD\u01D8\x07>\x02\x02\u01CE\u01D8\x05X-\x02\u01CF\u01D8\x05" +
+		"B\"\x02\u01D0\u01D8\x05P)\x02\u01D1\u01D8\x05\x80A\x02\u01D2\u01D3\x07" +
+		"\t\x02\x02\u01D3\u01D4\x07=\x02\x02\u01D4\u01D5\x050\x19\x02\u01D5\u01D6" +
 		"\x07>\x02\x02\u01D6\u01D8\x03\x02\x02\x02\u01D7\u01C8\x03\x02\x02\x02" +
 		"\u01D7\u01CA\x03\x02\x02\x02\u01D7\u01CE\x03\x02\x02\x02\u01D7\u01CF\x03" +
 		"\x02\x02\x02\u01D7\u01D0\x03\x02\x02\x02\u01D7\u01D1\x03\x02\x02\x02\u01D7" +
@@ -6230,25 +6244,29 @@ export class CParser extends Parser {
 		"\xAB\x03\x02\x02\x02\u043B\u043D\x054\x1B\x02\u043C\u043B\x03\x02\x02" +
 		"\x02\u043C\u043D\x03\x02\x02\x02\u043D\u043E\x03\x02\x02\x02\u043E\u0440" +
 		"\x05`1\x02\u043F\u0441\x05\xAEX\x02\u0440\u043F\x03\x02\x02\x02\u0440" +
-		"\u0441\x03\x02\x02\x02\u0441\u0442\x03\x02\x02\x02\u0442\u0443\x05\x92" +
-		"J\x02\u0443\xAD\x03\x02\x02\x02\u0444\u0446\x052\x1A\x02\u0445\u0444\x03" +
-		"\x02\x02\x02\u0446\u0447\x03\x02\x02\x02\u0447\u0445\x03\x02\x02\x02\u0447" +
-		"\u0448\x03\x02\x02\x02\u0448\xAF\x03\x02\x02\x02\x8B\xB5\xBD\xD1\xDF\xE4" +
-		"\xEB\xF3\xF7\xFF\u0105\u0107\u010F\u0115\u0123\u0128\u0131\u0138\u0140" +
-		"\u0148\u0150\u0158\u0160\u0168\u0170\u0178\u0180\u0189\u0191\u019A\u01A1" +
-		"\u01A6\u01AB\u01B0\u01B7\u01BE\u01C4\u01D7\u01DD\u01E2\u01EB\u01F2\u01F6" +
-		"\u01FB\u01FF\u0202\u0209\u020E\u0212\u0216\u021B\u0221\u0228\u022E\u023F" +
-		"\u0245\u024A\u0250\u025E\u0264\u0269\u026C\u0273\u0282\u028E\u0291\u0293" +
-		"\u029B\u029F\u02A9\u02AD\u02B1\u02B7\u02BA\u02C1\u02C3\u02C8\u02CC\u02D1" +
-		"\u02D6\u02DD\u02E5\u02E7\u02EE\u02F3\u02F7\u02FD\u0300\u0309\u030E\u0311" +
-		"\u0317\u0327\u032D\u0330\u0335\u0338\u033F\u0352\u0358\u035B\u035D\u0366" +
-		"\u036A\u036D\u0372\u0377\u0380\u0388\u0391\u03A4\u03A7\u03AF\u03B2\u03B6" +
-		"\u03BB\u03C8\u03CC\u03D3\u03D7\u03DA\u03E5\u03ED\u0403\u0407\u0409\u040D" +
-		"\u0411\u0415\u041C\u0424\u0428\u042D\u0434\u0439\u043C\u0440\u0447";
+		"\u0441\x03\x02\x02\x02\u0441\u0443\x03\x02\x02\x02\u0442\u0444\x05\x92" +
+		"J\x02\u0443\u0442\x03\x02\x02\x02\u0443\u0444\x03\x02\x02\x02\u0444\xAD" +
+		"\x03\x02\x02\x02\u0445\u0447\x052\x1A\x02\u0446\u0445\x03\x02\x02\x02" +
+		"\u0447\u0448\x03\x02\x02\x02\u0448\u0446\x03\x02\x02\x02\u0448\u0449\x03" +
+		"\x02\x02\x02\u0449\xAF\x03\x02\x02\x02\x8C\xB5\xBD\xD1\xDF\xE4\xEB\xF3" +
+		"\xF7\xFF\u0105\u0107\u010F\u0115\u0123\u0128\u0131\u0138\u0140\u0148\u0150" +
+		"\u0158\u0160\u0168\u0170\u0178\u0180\u0189\u0191\u019A\u01A1\u01A6\u01AB" +
+		"\u01B0\u01B7\u01BE\u01C4\u01D7\u01DD\u01E2\u01EB\u01F2\u01F6\u01FB\u01FF" +
+		"\u0202\u0209\u020E\u0212\u0216\u021B\u0221\u0228\u022E\u023F\u0245\u024A" +
+		"\u0250\u025E\u0264\u0269\u026C\u0273\u0282\u028E\u0291\u0293\u029B\u029F" +
+		"\u02A9\u02AD\u02B1\u02B7\u02BA\u02C1\u02C3\u02C8\u02CC\u02D1\u02D6\u02DD" +
+		"\u02E5\u02E7\u02EE\u02F3\u02F7\u02FD\u0300\u0309\u030E\u0311\u0317\u0327" +
+		"\u032D\u0330\u0335\u0338\u033F\u0352\u0358\u035B\u035D\u0366\u036A\u036D" +
+		"\u0372\u0377\u0380\u0388\u0391\u03A4\u03A7\u03AF\u03B2\u03B6\u03BB\u03C8" +
+		"\u03CC\u03D3\u03D7\u03DA\u03E5\u03ED\u0403\u0407\u0409";
+	private static readonly _serializedATNSegment2: string =
+		"\u040D\u0411\u0415\u041C\u0424\u0428\u042D\u0434\u0439\u043C\u0440\u0443" +
+		"\u0448";
 	public static readonly _serializedATN: string = Utils.join(
 		[
 			CParser._serializedATNSegment0,
 			CParser._serializedATNSegment1,
+			CParser._serializedATNSegment2,
 		],
 		"",
 	);
@@ -10088,14 +10106,14 @@ export class FunctionDefinitionContext extends ParserRuleContext {
 	public declarator(): DeclaratorContext {
 		return this.getRuleContext(0, DeclaratorContext);
 	}
-	public compoundStatement(): CompoundStatementContext {
-		return this.getRuleContext(0, CompoundStatementContext);
-	}
 	public declarationSpecifiers(): DeclarationSpecifiersContext | undefined {
 		return this.tryGetRuleContext(0, DeclarationSpecifiersContext);
 	}
 	public declarationList(): DeclarationListContext | undefined {
 		return this.tryGetRuleContext(0, DeclarationListContext);
+	}
+	public compoundStatement(): CompoundStatementContext | undefined {
+		return this.tryGetRuleContext(0, CompoundStatementContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);

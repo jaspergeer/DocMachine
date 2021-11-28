@@ -20,8 +20,8 @@ export function activate(context: vscode.ExtensionContext): void {
 
     vscode.workspace.onDidChangeTextDocument(changeEvent => {
         let change: vscode.TextDocumentContentChangeEvent = changeEvent.contentChanges[0];
-        /* we insert documentation when a two asterisk comment is created */
-        if (change.text === "/**") {
+        /* we insert documentation when a DocMachine comment is created */
+        if (change.text.split(" ")[0] === "/**\n") {
             const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
             let document: vscode.TextDocument = changeEvent.document;
             /* check that the document being edited is the document with changes */
@@ -29,37 +29,34 @@ export function activate(context: vscode.ExtensionContext): void {
                 let langId = editor.document.languageId;
                 let ctor: FunctionParserConstructor | undefined = funcParsers.get(langId);
                 if (ctor) {
+                    /* get the position that the body of the documentation will begin at */
                     let bodyPos: vscode.Position = change.range.start.translate(1, 0);
-                    console.log(change.range.start);
-                    console.log(bodyPos);
+                    let documentation: string;
 
                     /* if we are at the top line of the file insert a header */
                     if (bodyPos.line === 1) {
-                    /* insert the file header */
-                    editor.edit(editBuilder => {
-                        editBuilder.insert(bodyPos, generateFileHeader());
-                    });
+                    /* create the file header */
+                    documentation = generateFileHeader();
 
                     /* if we are not at the top line insert a function contract */
                     } else {
                         let range: vscode.Range = document.validateRange(
-                            new vscode.Range(change.range.end.translate(0,1),
-                            change.range.end.translate(document.lineCount)));
+                            new vscode.Range(new vscode.Position(change.range.end.line + 2, 0),
+                            new vscode.Position(document.lineCount, 0)));
                         /* 
                          * get the text beginning at the function declaration to the end of the
                          * file and pass it to the function parser
                          */
                         let toParse: string = document.getText(range);
-                        console.log(toParse);
                         let fparser: FunctionParser = createFunctionParser(ctor, 
                             CharStreams.fromString(toParse));
-                        /* insert the documentation */
-                        editor.edit(editBuilder => {
-                            editBuilder.insert(new vscode.Position(bodyPos.line, 0), "\n");
-                            editBuilder.insert(new vscode.Position(bodyPos.line, 0), generateFunctionContract(fparser, 
-                                bodyPos.character));
-                        });
+                        documentation = generateFunctionContract(fparser, bodyPos.character);
                     }
+
+                    /* insert the documentation */
+                    editor.edit(editBuilder => {
+                        editBuilder.insert(new vscode.Position(bodyPos.line, 0), documentation);
+                    });
                 }
             }
         }
@@ -75,21 +72,19 @@ export function deactivate() {}
  * @returns formatted function contract
  */
 function generateFunctionContract(fparser: FunctionParser, offset: number): string {
-    let result: string = getSpaces(offset) + " * @brief \n";
+    let result: string = generateSpaces(offset) + " * @brief \n";
     for (let param of fparser.getParamNames()) {
-        result += getSpaces(offset);
+        result += generateSpaces(offset);
         result += " * @param " + param + "\n";
     }
     if (fparser.getReturnType()) {
-        result += getSpaces(offset);
+        result += generateSpaces(offset);
         result += " * @returns " + fparser.getReturnType() + "\n";
     }
     for (let except of fparser.getExceptions()) {
-        result += getSpaces(offset);
+        result += generateSpaces(offset);
         result += " * @throw " + except + "\n";
     }
-    result += getSpaces(offset);
-    result += " */\n";
     return result;
 }
 
@@ -99,7 +94,7 @@ function generateFunctionContract(fparser: FunctionParser, offset: number): stri
  */
 function generateFileHeader(): string {
     // TODO implement this
-    return " placeholder header */\n";
+    return " placeholder header";
 }
 
 /**
@@ -107,7 +102,7 @@ function generateFileHeader(): string {
  * @param length number of spaces
  * @returns string containing given number of spaces
  */
-function getSpaces(length: number) {
+function generateSpaces(length: number) {
     let result: string = "";
     for (let i = 0; i < length; i++) {
         result += " ";
