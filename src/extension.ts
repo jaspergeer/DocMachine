@@ -1,5 +1,3 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import { CharStream, CharStreams } from 'antlr4ts';
 import * as vscode from 'vscode';
 import { CFunctionParser } from './antlr/C/CFunctionParser';
@@ -12,6 +10,10 @@ import { FunctionParser, FunctionParserConstructor } from './FunctionParser';
  */
 export function activate(context: vscode.ExtensionContext): void {
     vscode.window.showInformationMessage("DocMachine: supported language detected");
+    /* 
+     * create a map of language ids and function parser constructors with an entry for each
+     * supported language
+     */
     let funcParsers = new Map<string, FunctionParserConstructor>();
     funcParsers.set("c", CFunctionParser);
 
@@ -21,6 +23,7 @@ export function activate(context: vscode.ExtensionContext): void {
         if (change.text === "/**") {
             const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
             let document: vscode.TextDocument = changeEvent.document;
+            /* check that the document being edited is the document with changes */
             if (editor?.document === document) {
                 let langId = editor.document.languageId;
                 let ctor: FunctionParserConstructor | undefined = funcParsers.get(langId);
@@ -82,6 +85,20 @@ function generateFunctionContract(fparser: FunctionParser, offset: number): stri
     return result;
 }
 
+/**
+ * Created a formatted file header
+ * @returns formatted file header
+ */
+function generateFileHeader(): string {
+    // TODO implement this
+    return " placeholder header */\n";
+}
+
+/**
+ * Create a string containing a given number of space characters
+ * @param length number of spaces
+ * @returns string containing given number of spaces
+ */
 function getSpaces(length: number) {
     let result: string = "";
     for (let i = 0; i < length; i++) {
@@ -90,10 +107,12 @@ function getSpaces(length: number) {
     return result;
 }
 
-function generateFileHeader(): string {
-    return " placeholder header */\n";
-}
-
+/**
+ * Given a function parser constructor and charstream create a function parser
+ * @param ctor function parser constructor
+ * @param chars charstream to pass to constructor
+ * @returns function parser created by constructor
+ */
 function createFunctionParser(ctor: FunctionParserConstructor, chars: CharStream) {
     return new ctor(chars);
 }
