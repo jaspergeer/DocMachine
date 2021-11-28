@@ -2,8 +2,11 @@
 
 All notable changes to the "docmachine" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
 ## [Unreleased]
 
-- Initial release
+## [1.0.0] - 2021-11-28
+### Added
+- Support for c/c++ documents
+- File header generation
+- Function contract generation
+- This CHANGELOG file
