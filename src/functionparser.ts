@@ -1,3 +1,8 @@
+/*!
+ * Copyright 2021 Jasper Geer. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for license information.
+ */
+
 import { CharStream } from 'antlr4ts';
 
 export interface FunctionParserConstructor {

@@ -4,9 +4,11 @@ All notable changes to the "docmachine" extension will be documented in this fil
 
 ## [Unreleased]
 
-## [1.0.0] - 2021-11-28
+## [1.0.0]
 ### Added
 - Support for c/c++ documents
 - File header generation
 - Function contract generation
 - This CHANGELOG file
+### Changed
+- README updated for release
