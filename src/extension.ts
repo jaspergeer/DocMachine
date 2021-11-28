@@ -1,5 +1,4 @@
 import { CharStream, CharStreams } from 'antlr4ts';
-import { EOF } from 'dns';
 import * as vscode from 'vscode';
 import { CFunctionParser } from './antlr/C/CFunctionParser';
 import { FunctionParser, FunctionParserConstructor } from './FunctionParser';
@@ -16,7 +15,7 @@ export function activate(context: vscode.ExtensionContext): void {
      * supported language
      */
     let funcParsers = new Map<string, FunctionParserConstructor>();
-    
+
     /* currently supported languages: c, c++ */
     funcParsers.set("c", CFunctionParser);
     funcParsers.set("cpp", CFunctionParser);

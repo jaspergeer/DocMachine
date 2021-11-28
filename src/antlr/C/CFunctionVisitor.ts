@@ -1,6 +1,6 @@
 import { FunctionData } from "../FunctionData";
 import { CVisitor } from "../../antlr/C/CVisitor";
-import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor'
+import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 import { CompilationUnitContext, DeclaratorContext, DirectDeclaratorContext, ExternalDeclarationContext, FunctionDefinitionContext, ParameterDeclarationContext, ParameterListContext, ParameterTypeListContext, TranslationUnitContext } from "../../antlr/C/CParser";
 
 export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> implements CVisitor<FunctionData> {
