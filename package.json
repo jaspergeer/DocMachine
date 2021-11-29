@@ -3,7 +3,12 @@
   "displayName": "DocMachine",
   "publisher": "JasperGeer",
   "description": "On the fly documentation generator",
-  "version": "1.0.1",
+  "version": "1.0.2",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+      "color": "#2E3440",
+      "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -156,6 +161,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/jaspergeer/DocMachine"
-  },
-  "icon": "images/docmachine.png"
+  }
 }

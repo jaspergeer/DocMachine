@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.0.2]
+### Changed
+- New icon
+- New gallery banner color and theme
+
 ## [1.0.1]
 ### Changed
 - Fixed changelog
