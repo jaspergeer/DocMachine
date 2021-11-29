@@ -1,6 +1,7 @@
 {
   "name": "docmachine",
   "displayName": "DocMachine",
+  "publisher": "JasperGeer",
   "description": "On the fly documentation generator",
   "version": "1.0.0",
   "engines": {

@@ -70,8 +70,6 @@ export function activate(context: vscode.ExtensionContext): void {
     });
 }
 
-export function deactivate() {}
-
 /**
  * Create a formatted function contract
  * @param fparser function parser to extract data about the function

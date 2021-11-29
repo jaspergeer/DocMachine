@@ -7,9 +7,13 @@ It uses ANTLR-generated parsers to extract parameter names and return types from
 
 The user can customize the format of function contracts and file headers through VSCode settings.
 
+## Supported Languages
+* C
+* C++ (through the C Parser)
+
 ## Getting Started
 
-Step 1) Install the DocMachine extension from the VSCode marketplace.
+Step 1) Install the [DocMachine](https://marketplace.visualstudio.com/items?itemName=JasperGeer.docmachine) extension from the VSCode marketplace.
 
 Step 2) Open a document in a supported language. A message should appear in the bottom right of the window stating that a supported language is detected.
 
@@ -23,5 +27,7 @@ Step 4) Type **/dm** and press enter. Sit back and watch DocMachine generate doc
 *  [VSCode](https://code.visualstudio.com) - Editor and API used to build the extension
 
 ## Contributors
-
 *  [Jasper Geer](https://github.com/jaspergeer)
+
+## License
+MIT (c) Jasper Geer
