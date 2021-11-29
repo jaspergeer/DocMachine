@@ -122,7 +122,7 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     visitParameterDeclaration(ctx: ParameterDeclarationContext): FunctionData {
         if (ctx.declarator()) {
             return {
-                paramNames: [this.getFirstLeaf(ctx.declarator()!).text],
+                paramNames: [this.getLeftmostLeaf(ctx.declarator()!).text],
                 returnType: "",
                 exceptions: []
             };
@@ -130,9 +130,14 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return this.defaultResult();
     };
 
-    getFirstLeaf(ctx: ParseTree): ParseTree {
+    /**
+     * Get the leftmost leaf of a given parse tree
+     * @param ctx parse tree
+     * @returns leftmost leaf of parse tree
+     */
+    getLeftmostLeaf(ctx: ParseTree): ParseTree {
         if (ctx.childCount > 0) {
-            return this.getFirstLeaf(ctx.getChild(0));
+            return this.getLeftmostLeaf(ctx.getChild(0));
         }
         return ctx;
     }
