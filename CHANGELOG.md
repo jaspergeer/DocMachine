@@ -5,6 +5,7 @@
 - Fixed changelog
 - Fixed bug where the function name would be inserted as a parameter name when the function had no parameters
 - Fixed issues caused by patch 1.0.4
+
 ## [1.0.5]
 ### Changed
 - New square icon
