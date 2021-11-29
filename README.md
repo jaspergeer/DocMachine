@@ -30,4 +30,4 @@ Step 4) Type **/dm** and press enter. Sit back and watch DocMachine generate doc
 *  [Jasper Geer](https://github.com/jaspergeer)
 
 ## License
-MIT (c) Jasper Geer
+MIT &c Jasper Geer
