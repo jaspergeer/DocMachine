@@ -15,7 +15,9 @@ import { CParser } from "../../antlr/C/CParser";
 export class CFunctionParser implements FunctionParser {
     private tree: ParseTree | null = null;
     private visitor: CFunctionVisitor;
-    private funcData: FunctionData;
+    private paramNames: string[] = [];
+    private returnType: string = "";
+    private exceptions: string[] = [];
 
     /**
      * Create a new CFunctionParser and parse the given stream of characters to extract function
@@ -25,11 +27,6 @@ export class CFunctionParser implements FunctionParser {
      */
     constructor(chars: CharStream) {
         this.visitor = new CFunctionVisitor();
-        this.funcData = {
-            paramNames: [],
-            returnType: "",
-            exceptions: []
-        };
         let thisChar: number = chars.LA(1);
         let funcStr: string = "";
         
@@ -61,20 +58,23 @@ export class CFunctionParser implements FunctionParser {
         /* only extract data if this is a valid function signature */
         if (!errorStrategy.foundInvalidText()) {
             this.tree = parser.compilationUnit();
-            this.funcData = this.visitor.visit(this.tree);
+            let result: FunctionData = this.visitor.visit(this.tree);
+            this.paramNames = result.paramNames;
+            this.returnType = result.returnType;
+            this.exceptions = result.exceptions;
         }
     }
 
     getParamNames(): string[] {
-        return this.funcData.paramNames;
+        return this.paramNames;
     }
 
     getReturnType(): string {
-        return this.funcData.returnType;
+        return this.returnType;
     }
 
     getExceptions(): string[] {
-        return this.funcData.exceptions;
+        return this.exceptions;
     }
     
 }

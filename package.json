@@ -17,8 +17,7 @@
   ],
   "activationEvents": [
     "onLanguage:c",
-    "onLanguage:cpp",
-    "onLanguage:typescript"
+    "onLanguage:cpp"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -29,10 +28,6 @@
       },
       {
         "language": "cpp",
-        "path": "./snippets.code-snippets"
-      },
-      {
-        "language": "typescript",
         "path": "./snippets.code-snippets"
       }
     ],
