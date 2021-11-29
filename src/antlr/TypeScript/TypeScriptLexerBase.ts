@@ -1,3 +1,5 @@
+/** Modified by Jasper Geer */
+
 import {Lexer, Token, CharStream} from "antlr4ts";
 import {TypeScriptLexer} from './TypeScriptLexer';
 

@@ -1,13 +1,10 @@
 // Generated from src/antlr/TypeScript/TypeScriptParser.g4 by ANTLR 4.9.0-SNAPSHOT
-
+/** modified by Jasper Geer */
 
 import { ATN } from "antlr4ts/atn/ATN";
 import { ATNDeserializer } from "antlr4ts/atn/ATNDeserializer";
 import { FailedPredicateException } from "antlr4ts/FailedPredicateException";
-import { NotNull } from "antlr4ts/Decorators";
 import { NoViableAltException } from "antlr4ts/NoViableAltException";
-import { Override } from "antlr4ts/Decorators";
-import { Parser } from "antlr4ts/Parser";
 import { ParserRuleContext } from "antlr4ts/ParserRuleContext";
 import { ParserATNSimulator } from "antlr4ts/atn/ParserATNSimulator";
 import { ParseTreeListener } from "antlr4ts/tree/ParseTreeListener";

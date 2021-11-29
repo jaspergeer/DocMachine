@@ -1,3 +1,5 @@
+/** Modified by Jasper Geer */
+
 import {Parser, Lexer, Token, TokenStream} from 'antlr4ts';
 import {TypeScriptParser} from './TypeScriptParser';
 
