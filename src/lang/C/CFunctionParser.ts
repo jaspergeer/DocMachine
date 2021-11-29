@@ -15,9 +15,7 @@ import { CParser } from "../../antlr/C/CParser";
 export class CFunctionParser implements FunctionParser {
     private tree: ParseTree | null = null;
     private visitor: CFunctionVisitor;
-    private paramNames: string[] = [];
-    private returnType: string = "";
-    private exceptions: string[] = [];
+    private funcData: FunctionData;
 
     /**
      * Create a new CFunctionParser and parse the given stream of characters to extract function
@@ -27,6 +25,11 @@ export class CFunctionParser implements FunctionParser {
      */
     constructor(chars: CharStream) {
         this.visitor = new CFunctionVisitor();
+        this.funcData = {
+            paramNames: [],
+            returnType: "",
+            exceptions: []
+        };
         let thisChar: number = chars.LA(1);
         let funcStr: string = "";
         
@@ -36,15 +39,16 @@ export class CFunctionParser implements FunctionParser {
         }
 
         /* we only pass the function signature to the parser */
-        while (thisChar !== "{".charCodeAt(0) && thisChar !== ";".charCodeAt(0)) {
+        while (thisChar !== ")".charCodeAt(0)) {
             /* function signatures should not contain these characters */
-            if (thisChar === -1 || thisChar === "#".charCodeAt(0)) {
+            if (thisChar === -1 || thisChar === ";".charCodeAt(0) || thisChar === "#".charCodeAt(0)) {
                 return;
             }
             funcStr += String.fromCharCode(thisChar);
             chars.consume();
             thisChar = chars.LA(1);
         }
+        funcStr += ")";
 
         /* parse the function signature */
         chars = CharStreams.fromString(funcStr);
@@ -57,23 +61,20 @@ export class CFunctionParser implements FunctionParser {
         /* only extract data if this is a valid function signature */
         if (!errorStrategy.foundInvalidText()) {
             this.tree = parser.compilationUnit();
-            let result: FunctionData = this.visitor.visit(this.tree);
-            this.paramNames = result.paramNames;
-            this.returnType = result.returnType;
-            this.exceptions = result.exceptions;
+            this.funcData = this.visitor.visit(this.tree);
         }
     }
 
     getParamNames(): string[] {
-        return this.paramNames;
+        return this.funcData.paramNames;
     }
 
     getReturnType(): string {
-        return this.returnType;
+        return this.funcData.returnType;
     }
 
     getExceptions(): string[] {
-        return this.exceptions;
+        return this.funcData.exceptions;
     }
     
 }
