@@ -9,13 +9,13 @@ The user can customize the format of function contracts and file headers through
 
 ## Getting Started
 
-Step 1) Install the DocMachine extension from the VSCode marketplace
+Step 1) Install the DocMachine extension from the VSCode marketplace.
 
-Step 2) Open a document in a supported language, a message should appear in the bottom right of the window stating that a supported language is detected
+Step 2) Open a document in a supported language. A message should appear in the bottom right of the window stating that a supported language is detected.
 
-Step 3) Place the cursor at the top of the document (to generate a file header) or above a function declaration (to generate a function contract)
+Step 3) Place the cursor at the top of the document (to generate a file header) or above a function declaration (to generate a function contract).
 
-Step 4) Type **/dm** and press enter
+Step 4) Type **/dm** and press enter. Sit back and watch DocMachine generate documentation for you!
 
 ## Built With
 *  [TypeScript](https://www.typescriptlang.org) - Language used to build the extension
