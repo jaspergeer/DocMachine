@@ -2,6 +2,7 @@
 
 ## [1.0.4]
 - New high resolution icon
+- Fixed bug where square brackets after parameter names would be included as part of the parameter name
 
 ## [1.0.3]
 ### Changed
