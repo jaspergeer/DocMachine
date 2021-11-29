@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.0.5]
+- New square icon
+- Fixed bug where the function name would be inserted as a parameter name when the function had no parameters
+- Fixed issues caused by patch 1.0.4
+
 ## [1.0.4]
 - New high resolution icon
 - Fixed bug where square brackets after parameter names would be included as part of the parameter name
