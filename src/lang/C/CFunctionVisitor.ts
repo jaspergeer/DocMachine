@@ -7,6 +7,7 @@ import { FunctionData } from "../FunctionData";
 import { CVisitor } from "../../antlr/C/CVisitor";
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 import { CompilationUnitContext, DeclaratorContext, DirectDeclaratorContext, ExternalDeclarationContext, FunctionDefinitionContext, ParameterDeclarationContext, ParameterListContext, ParameterTypeListContext, TranslationUnitContext } from "../../antlr/C/CParser";
+import { ParseTree } from "antlr4ts/tree/ParseTree";
 
 export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> implements CVisitor<FunctionData> {
 
@@ -90,14 +91,21 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     };
 
     visitDirectDeclarator (ctx: DirectDeclaratorContext): FunctionData {
-        /* if we have a list of parameters, parse the list */
+        /* if we have a list of parameters or a complex parameter parse the list */
         if (ctx.parameterTypeList()) {
             return this.visitParameterTypeList(ctx.parameterTypeList()!);
-        
-        /* if we have a single parameter get its name */
         } else if (ctx.directDeclarator()) {
+            /* if we have a single simple parameter get its name */
+            if (ctx.directDeclarator()?.directDeclarator()) {
+                return {
+                    paramNames: [ctx.directDeclarator()!.text],
+                    returnType: "",
+                    exceptions: []
+                };
+            }
+            /* if we have no parameters return no parameter names */
             return {
-                paramNames: [ctx.directDeclarator()!.text],
+                paramNames: [],
                 returnType: "",
                 exceptions: []
             };
@@ -137,8 +145,19 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
      */
     visitParameterDeclaration(ctx: ParameterDeclarationContext): FunctionData {
         if (ctx.declarator()) {
-            return this.visitDeclarator(ctx.declarator()!);
+            return {
+                paramNames: [this.getFirstLeaf(ctx.declarator()!).text],
+                returnType: "",
+                exceptions: []
+            };
         }
         return this.defaultResult();
     };
+
+    getFirstLeaf(ctx: ParseTree): ParseTree {
+        if (ctx.childCount > 0) {
+            return this.getFirstLeaf(ctx.getChild(0));
+        }
+        return ctx;
+    }
 }
