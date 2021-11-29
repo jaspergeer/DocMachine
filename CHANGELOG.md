@@ -1,6 +1,9 @@
 # Change Log
 
-## [Unreleased]
+## [1.0.1]
+### Changed
+- Fixed changelog
+- Fixed bug where documentation would not be generated for functions with spaces before the declaration
 
 ## [1.0.0]
 ### Added

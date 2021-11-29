@@ -31,7 +31,7 @@ export class CFunctionParser implements FunctionParser {
         let funcStr: string = "";
         
         /* don't parse if this is a comment or an invalid beginning of a function signature */
-        if (thisChar === " ".charCodeAt(0) || thisChar === "/".charCodeAt(0) || thisChar === "\n".charCodeAt(0)) {
+        if (thisChar === "/".charCodeAt(0) || thisChar === "\n".charCodeAt(0)) {
             return;
         }
 
