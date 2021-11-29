@@ -24,6 +24,7 @@ Step 4) Type **/dm** and press enter. Sit back and watch DocMachine generate doc
 ## Built With
 *  [TypeScript](https://www.typescriptlang.org) - Language used to build the extension
 *  [ANTLR](https://www.antlr.org) - Parser generator
+*  [antlr4ts](https://github.com/tunnelvisionlabs/antlr4ts) - TypeScript target for ANTLR
 *  [VSCode](https://code.visualstudio.com) - Editor and API used to build the extension
 
 ## Contributors
