@@ -17,6 +17,11 @@
   "contributes": {
     "snippets": [
       {
+        "language": "c",
+        "path": "./snippets.code-snippets"
+      },
+      {
+        "language": "cpp",
         "path": "./snippets.code-snippets"
       }
     ],

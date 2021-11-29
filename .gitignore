@@ -182,3 +182,6 @@ dist/*
 
 # Test Directory
 Src/test/*
+
+# Packages
+*.vsix
