@@ -3,7 +3,7 @@
   "displayName": "DocMachine",
   "publisher": "JasperGeer",
   "description": "On the fly documentation generator",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "icon": "images/icon.png",
   "galleryBanner": {
       "color": "#2E3440",
@@ -17,8 +17,7 @@
   ],
   "activationEvents": [
     "onLanguage:c",
-    "onLanguage:cpp",
-    "onLanguage:typescript"
+    "onLanguage:cpp"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -29,10 +28,6 @@
       },
       {
         "language": "cpp",
-        "path": "./snippets.code-snippets"
-      },
-      {
-        "language": "typescript",
         "path": "./snippets.code-snippets"
       }
     ],
@@ -139,8 +134,6 @@
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "antlr4ts:C": "antlr4ts -visitor src/antlr/C/C.g4",
-    "antlr4ts:JavaScript": "antlr4ts -visitor src/antlr/JavaScript/JavaScriptLexer.g4 && antlr4ts -visitor src/antlr/JavaScript/JavaScriptParser.g4",
-    "antlr4ts:TypeScript": "antlr4ts -visitor src/antlr/TypeScript/TypeScriptLexer.g4 && antlr4ts -visitor src/antlr/TypeScript/TypeScriptParser.g4",
     "vscode:prepublish": "npm run esbuild-base -- --minify",
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",

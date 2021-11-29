@@ -7,8 +7,6 @@ import { CharStream, CharStreams } from 'antlr4ts';
 import * as vscode from 'vscode';
 import { CFunctionParser } from './lang/C/CFunctionParser';
 import { FunctionParser, FunctionParserConstructor } from './lang/FunctionParser';
-import { TypeScriptFunctionParser } from './lang/JavaScript/TypeScriptFunctionParser';
-import { TypeScriptFunctionVisitor } from './lang/JavaScript/TypeScriptFunctionVisitor';
 
 /**
  * This function is called when vscode activates this extension. This extension is activated when
@@ -26,7 +24,6 @@ export function activate(context: vscode.ExtensionContext): void {
     /* currently supported languages: c, c++ */
     funcParsers.set("c", CFunctionParser);
     funcParsers.set("cpp", CFunctionParser);
-    funcParsers.set("typescript", TypeScriptFunctionParser);
 
     vscode.workspace.onDidChangeTextDocument(changeEvent => {
         let change: vscode.TextDocumentContentChangeEvent = changeEvent.contentChanges[0];
