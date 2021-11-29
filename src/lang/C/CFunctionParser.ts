@@ -5,12 +5,12 @@
 
 import { CharStream, CharStreams, CommonTokenStream } from "antlr4ts";
 import { ParseTree } from "antlr4ts/tree/ParseTree";
-import { FunctionParser } from "../../FunctionParser";
+import { FunctionParser } from "../FunctionParser";
 import { DMErrorStrategy } from "../DMErrorStrategy";
 import { FunctionData } from "../FunctionData";
 import { CFunctionVisitor } from "./CFunctionVisitor";
-import { CLexer } from "./CLexer";
-import { CParser } from "./CParser";
+import { CLexer } from "../../antlr/C/CLexer";
+import { CParser } from "../../antlr/C/CParser";
 
 export class CFunctionParser implements FunctionParser {
     private tree: ParseTree | null = null;

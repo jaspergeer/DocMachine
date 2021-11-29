@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.0.4]
+- New high resolution icon
+
 ## [1.0.3]
 ### Changed
 - New icon

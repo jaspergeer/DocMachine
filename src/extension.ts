@@ -5,8 +5,8 @@
 
 import { CharStream, CharStreams } from 'antlr4ts';
 import * as vscode from 'vscode';
-import { CFunctionParser } from './antlr/C/CFunctionParser';
-import { FunctionParser, FunctionParserConstructor } from './FunctionParser';
+import { CFunctionParser } from './lang/C/CFunctionParser';
+import { FunctionParser, FunctionParserConstructor } from './lang/FunctionParser';
 
 /**
  * This function is called when vscode activates this extension. This extension is activated when
