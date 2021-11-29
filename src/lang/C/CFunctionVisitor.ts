@@ -137,11 +137,7 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
      */
     visitParameterDeclaration(ctx: ParameterDeclarationContext): FunctionData {
         if (ctx.declarator()) {
-            return {
-                paramNames: [ctx.declarator()!.text],
-                returnType: "",
-                exceptions: []
-            };
+            return this.visitDeclarator(ctx.declarator()!);
         }
         return this.defaultResult();
     };
