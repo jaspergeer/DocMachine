@@ -7,8 +7,8 @@ import { CharStream, CharStreams } from 'antlr4ts';
 import * as vscode from 'vscode';
 import { CFunctionParser } from './lang/C/CFunctionParser';
 import { FunctionParser, FunctionParserConstructor } from './lang/FunctionParser';
-import { TypeScriptFunctionParser } from './lang/JavaScript/TypeScriptFunctionParser';
-import { TypeScriptFunctionVisitor } from './lang/JavaScript/TypeScriptFunctionVisitor';
+import { TypeScriptFunctionParser } from './lang/TypeScript/TypeScriptFunctionParser';
+import { TypeScriptFunctionVisitor } from './lang/TypeScript/TypeScriptFunctionVisitor';
 
 /**
  * This function is called when vscode activates this extension. This extension is activated when
