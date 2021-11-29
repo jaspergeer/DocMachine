@@ -3,7 +3,7 @@
   "displayName": "DocMachine",
   "publisher": "JasperGeer",
   "description": "On the fly documentation generator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "icon": "images/icon.png",
   "galleryBanner": {
       "color": "#2E3440",

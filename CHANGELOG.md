@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.0.3]
+### Changed
+- New icon
+
 ## [1.0.2]
 ### Changed
 - New icon
