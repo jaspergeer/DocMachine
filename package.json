@@ -1,8 +1,8 @@
 {
   "name": "docmachine",
-  "displayName": "docmachine",
-  "description": "",
-  "version": "0.0.1",
+  "displayName": "DocMachine",
+  "description": "On the fly documentation generator",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -13,117 +13,121 @@
     "onLanguage:c",
     "onLanguage:cpp"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "snippets": [
-        {
-            "path": "./snippets.code-snippets"
-        }
+      {
+        "path": "./snippets.code-snippets"
+      }
     ],
     "configuration": {
-        "title": "DocMachine",
-        "properties": {
-            "docmachine.contracts.descPrefix": {
-                "type": "string",
-                "default": "@brief ",
-                "description": "Text placed before function description."
-            },
-            "docmachine.contracts.paramPrefix": {
-                "type": "string",
-                "default": "@param ",
-                "description": "Text placed before each parameter name."
-            },
-            "docmachine.contracts.returnPrefix": {
-                "type": "string",
-                "default": "@returns ",
-                "description": "Text placed before return type."
-            },
-            "docmachine.contracts.exceptPrefix": {
-                "type": "string",
-                "default": "@throws ",
-                "description": "Text placed before each exception type."
-            },
-            "docmachine.headers.filePrefix": {
-                "type": "string",
-                "default": "@file ",
-                "description": "Text placed before filename."
-            },
-            "docmachine.headers.fileToggle": {
-                "type": "boolean",
-                "default": true,
-                "description": "Toggle the filename header block."
-            },
-            "docmachine.headers.authorPrefix": {
-                "type": "string",
-                "default": "@author your name",
-                "description": "Text placed before author name."
-            },
-            "docmachine.headers.authorToggle": {
-                "type": "boolean",
-                "default": true,
-                "description": "Toggle the author header block."
-            },
-            "docmachine.headers.descPrefix": {
-                "type": "string",
-                "default": "@brief file description",
-                "description": "Text placed before file description."
-            },
-            "docmachine.headers.descToggle": {
-                "type": "boolean",
-                "default": true,
-                "description": "Toggle the description header block."
-            },
-            "docmachine.headers.versionPrefix": {
-                "type": "string",
-                "default": "@version 0.1",
-                "description": "Text placed before version number."
-            },
-            "docmachine.headers.versionToggle": {
-                "type": "boolean",
-                "default": true,
-                "description": "Toggle the version number header block."
-            },
-            "docmachine.headers.datePrefix": {
-                "type": "string",
-                "default": "@date ",
-                "description": "Text placed before date."
-            },
-            "docmachine.headers.dateToggle": {
-                "type": "boolean",
-                "default": true,
-                "description": "Toggle the date header block."
-            },
-            "docmachine.headers.copyrightPrefix": {
-                "type": "string",
-                "default": "@copyright Copyright (c) ",
-                "description": "Text placed before copyright."
-            },
-            "docmachine.headers.copyrightToggle": {
-                "type": "boolean",
-                "default": true,
-                "description": "Toggle the copyright header block."
-            },
-            "docmachine.headers.license": {
-                "type": "string",
-                "default": "Licensed under the XYZ license.",
-                "description": "License information."
-            },
-            "docmachine.headers.licenseToggle": {
-                "type": "boolean",
-                "default": true,
-                "description": "Toggle the license header block."
-            }
+      "title": "DocMachine",
+      "properties": {
+        "docmachine.contracts.descPrefix": {
+          "type": "string",
+          "default": "@brief ",
+          "description": "Text placed before function description."
+        },
+        "docmachine.contracts.paramPrefix": {
+          "type": "string",
+          "default": "@param ",
+          "description": "Text placed before each parameter name."
+        },
+        "docmachine.contracts.returnPrefix": {
+          "type": "string",
+          "default": "@returns ",
+          "description": "Text placed before return type."
+        },
+        "docmachine.contracts.exceptPrefix": {
+          "type": "string",
+          "default": "@throws ",
+          "description": "Text placed before each exception type."
+        },
+        "docmachine.headers.filePrefix": {
+          "type": "string",
+          "default": "@file ",
+          "description": "Text placed before filename."
+        },
+        "docmachine.headers.fileToggle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Toggle the filename header block."
+        },
+        "docmachine.headers.authorPrefix": {
+          "type": "string",
+          "default": "@author your name",
+          "description": "Text placed before author name."
+        },
+        "docmachine.headers.authorToggle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Toggle the author header block."
+        },
+        "docmachine.headers.descPrefix": {
+          "type": "string",
+          "default": "@brief file description",
+          "description": "Text placed before file description."
+        },
+        "docmachine.headers.descToggle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Toggle the description header block."
+        },
+        "docmachine.headers.versionPrefix": {
+          "type": "string",
+          "default": "@version 0.1",
+          "description": "Text placed before version number."
+        },
+        "docmachine.headers.versionToggle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Toggle the version number header block."
+        },
+        "docmachine.headers.datePrefix": {
+          "type": "string",
+          "default": "@date ",
+          "description": "Text placed before date."
+        },
+        "docmachine.headers.dateToggle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Toggle the date header block."
+        },
+        "docmachine.headers.copyrightPrefix": {
+          "type": "string",
+          "default": "@copyright Copyright (c) ",
+          "description": "Text placed before copyright."
+        },
+        "docmachine.headers.copyrightToggle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Toggle the copyright header block."
+        },
+        "docmachine.headers.license": {
+          "type": "string",
+          "default": "Licensed under the XYZ license.",
+          "description": "License information."
+        },
+        "docmachine.headers.licenseToggle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Toggle the license header block."
         }
+      }
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
-    "antlr4ts:C": "antlr4ts -visitor src/antlr/C/C.g4"
+    "antlr4ts:C": "antlr4ts -visitor src/antlr/C/C.g4",
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "test-compile": "tsc -p ./"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",
@@ -134,6 +138,7 @@
     "@typescript-eslint/parser": "^5.1.0",
     "@vscode/test-electron": "^1.6.2",
     "antlr4ts-cli": "^0.5.0-alpha.4",
+    "esbuild": "^0.14.0",
     "eslint": "^8.1.0",
     "glob": "^7.1.7",
     "mocha": "^9.1.3",
@@ -141,5 +146,10 @@
   },
   "dependencies": {
     "antlr4ts": "^0.5.0-alpha.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaspergeer/DocMachine"
+  },
+  "icon": "images/docmachine.png"
 }

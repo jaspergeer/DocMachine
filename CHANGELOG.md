@@ -1,7 +1,5 @@
 # Change Log
 
-All notable changes to the "docmachine" extension will be documented in this file.
-
 ## [Unreleased]
 
 ## [1.0.0]
@@ -10,5 +8,6 @@ All notable changes to the "docmachine" extension will be documented in this fil
 - File header generation
 - Function contract generation
 - This CHANGELOG file
+- Documentation formatting can be changed through settings
 ### Changed
 - README updated for release

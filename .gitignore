@@ -176,8 +176,9 @@ dist
 # Support for Project snippet scope
 !.vscode/*.code-snippets
 
-# Output Directory
+# Output Directories
 out/*
+dist/*
 
 # Test Directory
 Src/test/*

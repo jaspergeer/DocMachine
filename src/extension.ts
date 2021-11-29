@@ -119,7 +119,8 @@ function generateFileHeader(document: vscode.TextDocument): string {
     }
     let date: Date = new Date();
     if (config.get("dateToggle")) {
-        result += " * " + config.get("datePrefix") + date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + "\n";
+        result += " * " + config.get("datePrefix") + date.getFullYear() + "-" + date.getMonth()
+        + "-" + date.getDay() + "\n";
     }
     if (config.get("copyrightToggle")) {
         result += " * " + config.get("copyrightPrefix") + date.getFullYear() + "\n";
