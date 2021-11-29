@@ -47,8 +47,9 @@ export class TypeScriptFunctionVisitor extends AbstractParseTreeVisitor<Function
         };
         for (let param of ctx.parameter()) {
             if (param.requiredParameter()) {
-                console.log(param.requiredParameter()?.identifierOrPattern().identifierName()?.text);
                 result.paramNames.push(this.getLeftmostLeaf(param.requiredParameter()!).text);
+            } else if(param.optionalParameter()) {
+                result.paramNames.push(this.getLeftmostLeaf(param.optionalParameter()!).text);
             }
         }
         return result;
