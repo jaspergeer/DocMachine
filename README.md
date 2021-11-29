@@ -26,8 +26,8 @@ Step 4) Type **/dm** and press enter. Sit back and watch DocMachine generate doc
 *  [VSCode](https://code.visualstudio.com) - Editor and API used to build the extension
 *  [ANTLR](https://www.antlr.org) - Parser generator
 *  [antlr4ts](https://github.com/tunnelvisionlabs/antlr4ts) - TypeScript target for ANTLR
-*  [Nodejs](https://nodejs.org/en/) - JavaScript runtime
-*  [npm](https://www.npmjs.com) - Package manager for Nodejs
+*  [Node.js](https://nodejs.org/en/) - JavaScript runtime
+*  [npm](https://www.npmjs.com) - Package manager for Node.js
 
 ## Contributors
 *  [Jasper Geer](https://github.com/jaspergeer)
