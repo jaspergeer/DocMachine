@@ -24,37 +24,13 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     }
 
     /**
-     * Visit a compilation unit
+     * Visit a compilation unit. This is the entry point into the parse tree.
      * @param ctx the current node in the parse tree
      * @returns data from a function definition subnode if it exists otherwise default result
      */
     visitCompilationUnit(ctx: CompilationUnitContext): FunctionData  {
-        if (ctx.translationUnit()) {
-            return this.visitTranslationUnit(ctx.translationUnit()!);
-        }
-        return this.defaultResult();
-    }
-
-    /**
-     * Visit a translation unit
-     * @param ctx the current node in the parse tree
-     * @returns data from a function definition subnode if it exists otherwise default result
-     */
-    visitTranslationUnit (ctx: TranslationUnitContext): FunctionData {
-        if (ctx.externalDeclaration()[0]) {
-            return this.visitExternalDeclaration(ctx.externalDeclaration()[0]!);
-        }
-        return this.defaultResult();
-    }
-
-    /**
-     * Visit an external declaration
-     * @param ctx the current node in the parse tree
-     * @returns data from a function definition subnode if it exists otherwise default result
-     */
-    visitExternalDeclaration (ctx: ExternalDeclarationContext): FunctionData {
-        if (ctx.functionDefinition()) {
-            return this.visitFunctionDefinition(ctx.functionDefinition()!);
+        if (ctx.translationUnit()?.externalDeclaration()[0].functionDefinition()) {
+            return this.visitFunctionDefinition(ctx.translationUnit()!.externalDeclaration()[0].functionDefinition()!);
         }
         return this.defaultResult();
     }
