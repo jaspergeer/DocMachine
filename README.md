@@ -1,7 +1,7 @@
 
 # DocMachine
 
-DocMachine is a Visual Studio Code extension for generating documentation on the fly.
+DocMachine is a Visual Studio Code extension that generates documentation on the fly when the user types ***/dm***.
 
 It uses ANTLR-generated parsers to extract parameter names and return types from your code and create formatted function contracts.
 

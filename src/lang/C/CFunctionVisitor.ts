@@ -89,7 +89,7 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         }
         return this.defaultResult();
     };
-
+    
     visitDirectDeclarator (ctx: DirectDeclaratorContext): FunctionData {
         /* if we have a list of parameters or a complex parameter parse the list */
         if (ctx.parameterTypeList()) {
