@@ -113,8 +113,8 @@ suite('C Test Suite', () => {
         assert(parser.getExceptions().length === 0);
         assert(parser.getParamNames().length === 3);
         assert(parser.getParamNames()[0] === "f");
-        assert(parser.getParamNames()[0] === "d");
-        assert(parser.getParamNames()[0] === "g");
+        assert(parser.getParamNames()[1] === "d");
+        assert(parser.getParamNames()[2] === "g");
 	});
 
     test('More declaration specifiers no parameters test', () => {
@@ -142,5 +142,16 @@ suite('C Test Suite', () => {
         assert(parser.getParamNames().length === 2);
         assert(parser.getParamNames()[0] === "i");
         assert(parser.getParamNames()[1] === "b");
+	});
+
+    test('More declaration specifiers function parameter test', () => {
+        let input: string = "extern void func ( void (*f)(int), void (*d)(int, char), void (*g)() );";
+        let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 3);
+        assert(parser.getParamNames()[0] === "f");
+        assert(parser.getParamNames()[1] === "d");
+        assert(parser.getParamNames()[2] === "g");
 	});
 });
