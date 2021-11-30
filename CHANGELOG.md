@@ -2,7 +2,7 @@
 
 ## [1.0.7]
 ### Changed
-- Fixed bug where the extern keyword would be included as part of the return type
+- Fixed bug where the tokens before the function return type would be included as part of the return type
 
 ## [1.0.6]
 ### Changed
