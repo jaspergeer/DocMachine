@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.0.8]
+### Changed
+- Fixed bug where where a declaration with multiple declaration specifiers before a declaration with a single pointer parameter would result in incorrect return type and parameter names
+
 ## [1.0.7]
 ### Changed
 - Fixed bug where the tokens before the function return type would be included as part of the return type
@@ -41,5 +45,6 @@
 - Function contract generation
 - This CHANGELOG file
 - Documentation formatting can be changed through settings
+
 ### Changed
 - README updated for release
