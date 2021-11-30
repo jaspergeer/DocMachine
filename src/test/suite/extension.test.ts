@@ -105,4 +105,42 @@ suite('C Test Suite', () => {
         assert(parser.getParamNames().length === 1);
         assert(parser.getParamNames()[0] === "f");
 	});
+
+    test('Function pointer multiple parameter test', () => {
+        let input: string = "void func ( void (*f)(int), void (*d)(int, char), void (*g)() );";
+        let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 3);
+        assert(parser.getParamNames()[0] === "f");
+        assert(parser.getParamNames()[0] === "d");
+        assert(parser.getParamNames()[0] === "g");
+	});
+
+    test('More declaration specifiers no parameters test', () => {
+        let input: string = "extern void func();";
+        let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 0);
+	});
+
+    test('More declaration specifiers one parameter test', () => {
+        let input: string = "extern inline int func(int i);";
+        let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "int");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 1);
+        assert(parser.getParamNames()[0] === "i");
+	});
+
+    test('More declaration specifiers two parameter test', () => {
+        let input: string = "extern inline int func(int i, char b);";
+        let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "int");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 2);
+        assert(parser.getParamNames()[0] === "i");
+        assert(parser.getParamNames()[1] === "b");
+	});
 });
