@@ -41,7 +41,6 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
      * @returns FunctionData containing parameter names and return type of function
      */
     visitFunctionDefinition(ctx: FunctionDefinitionContext): FunctionData {
-        console.log(ctx);
         let result: FunctionData = this.defaultResult();
         if (ctx.declarator().directDeclarator().parameterTypeList()?.parameterList()) {
             result = this.visitParameterList(ctx.declarator().directDeclarator().parameterTypeList()!.parameterList());
@@ -50,7 +49,6 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
             result = this.visitDirectDeclarator(ctx.declarator()!.directDeclarator()!);
         }
         if (ctx.declarationSpecifiers()?.declarationSpecifier()) {
-            console.log(ctx.declarationSpecifiers()?.declarationSpecifier());
             let declSpecCtx: DeclarationSpecifierContext[] = ctx.declarationSpecifiers()!.declarationSpecifier();
             let returnTypeCtx: DeclarationSpecifierContext | undefined;
             /* special case for single pointer parameter */
