@@ -144,7 +144,7 @@ suite('C Test Suite', () => {
         assert(parser.getParamNames()[1] === "b");
 	});
 
-    test('More declaration specifiers function parameter test', () => {
+    test('More declaration specifiers function pointer parameter test', () => {
         let input: string = "extern void func ( void (*f)(int), void (*d)(int, char), void (*g)() );";
         let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "");
@@ -153,5 +153,52 @@ suite('C Test Suite', () => {
         assert(parser.getParamNames()[0] === "f");
         assert(parser.getParamNames()[1] === "d");
         assert(parser.getParamNames()[2] === "g");
+	});
+
+    test('More declaration specifiers single pointer parameter test', () => {
+        let input: string = "extern inline int func (int *i);";
+        let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "int");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 1);
+        assert(parser.getParamNames()[0] === "i");
+	});
+
+    test('More declaration specifiers array parameter test', () => {
+        let input: string = "extern inline int func (int i[]);";
+        let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "int");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 1);
+        assert(parser.getParamNames()[0] === "i");
+	});
+
+    test('More declaration specifiers array pointer parameter test', () => {
+        let input: string = "extern inline int func (int *i[]);";
+        let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "int");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 1);
+        assert(parser.getParamNames()[0] === "i");
+	});
+
+    test('More declaration specifiers multiple array parameter test', () => {
+        let input: string = "extern inline char func (int i[], char j[][]);";
+        let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "char");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 2);
+        assert(parser.getParamNames()[0] === "i");
+        assert(parser.getParamNames()[1] === "j");
+	});
+
+    test('More declaration specifiers multiple array pointer parameter test', () => {
+        let input: string = "extern inline char func (int *i[], char *j[][]);";
+        let parser: CFunctionParser = new CFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "char");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 2);
+        assert(parser.getParamNames()[0] === "i");
+        assert(parser.getParamNames()[1] === "j");
 	});
 });
