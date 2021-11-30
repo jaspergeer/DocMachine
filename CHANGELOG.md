@@ -41,5 +41,6 @@
 - Function contract generation
 - This CHANGELOG file
 - Documentation formatting can be changed through settings
+
 ### Changed
 - README updated for release
