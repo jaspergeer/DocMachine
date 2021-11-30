@@ -202,3 +202,6 @@ suite('C Test Suite', () => {
         assert(parser.getParamNames()[1] === "j");
 	});
 });
+
+suite('TypeScript Test Suite', () => {
+});
