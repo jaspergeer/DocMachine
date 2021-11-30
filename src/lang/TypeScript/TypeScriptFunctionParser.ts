@@ -1,30 +1,19 @@
-/*!
- * Copyright 2021 Jasper Geer. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for license information.
- */
-
-import { CharStream, CharStreams, CommonTokenStream } from "antlr4ts";
+import { CharStream, CharStreams, CommonTokenStream, Lexer, TokenStream } from "antlr4ts";
 import { ParseTree } from "antlr4ts/tree/ParseTree";
-import { FunctionParser } from "../FunctionParser";
+import { TypeScriptLexer } from "../../antlr/TypeScript/TypeScriptLexer";
+import { TypeScriptParser } from "../../antlr/TypeScript/TypeScriptParser";
 import { DMErrorStrategy } from "../DMErrorStrategy";
 import { FunctionData } from "../FunctionData";
-import { CFunctionVisitor } from "./CFunctionVisitor";
-import { CLexer } from "../../antlr/C/CLexer";
-import { CParser } from "../../antlr/C/CParser";
+import { FunctionParser } from "../FunctionParser";
+import { TypeScriptFunctionVisitor } from "./TypeScriptFunctionVisitor";
 
-export class CFunctionParser implements FunctionParser {
+export class TypeScriptFunctionParser implements FunctionParser {
     private tree: ParseTree | null = null;
-    private visitor: CFunctionVisitor;
+    private visitor: TypeScriptFunctionVisitor;
     private funcData: FunctionData;
 
-    /**
-     * Create a new CFunctionParser and parse the given stream of characters to extract function
-     * signature information if possible
-     * @param chars stream of characters to parse
-     * @returns new CFunctionParser
-     */
     constructor(chars: CharStream) {
-        this.visitor = new CFunctionVisitor();
+        this.visitor = new TypeScriptFunctionVisitor();
         this.funcData = {
             paramNames: [],
             returnType: "",
@@ -39,28 +28,24 @@ export class CFunctionParser implements FunctionParser {
         }
 
         /* we only pass the function signature to the parser */
-        while (thisChar !== ")".charCodeAt(0)) {
-            /* function signatures should not contain these characters */
-            if (thisChar === -1 || thisChar === ";".charCodeAt(0) || thisChar === "#".charCodeAt(0)) {
-                return;
-            }
+        while (thisChar !== "{".charCodeAt(0) && thisChar !== ";".charCodeAt(0)) {
             funcStr += String.fromCharCode(thisChar);
             chars.consume();
             thisChar = chars.LA(1);
         }
-        funcStr += ")";
+        funcStr += ";";
 
-        /* parse the function signature */
         chars = CharStreams.fromString(funcStr);
-        let lexer = new CLexer(chars);
-        let tokens = new CommonTokenStream(lexer);
-        let parser = new CParser(tokens);
+        
+        let lexer: Lexer = new TypeScriptLexer(chars);
+        let tokens: TokenStream = new CommonTokenStream(lexer);
+        let parser = new TypeScriptParser(tokens);
         let errorStrategy = new DMErrorStrategy();
         parser.errorHandler = errorStrategy;
 
         /* only extract data if this is a valid function signature */
         if (!errorStrategy.foundInvalidText()) {
-            this.tree = parser.compilationUnit();
+            this.tree = parser.program();
             this.funcData = this.visitor.visit(this.tree);
         }
     }
@@ -68,11 +53,9 @@ export class CFunctionParser implements FunctionParser {
     getParamNames(): string[] {
         return this.funcData.paramNames;
     }
-
     getReturnType(): string {
         return this.funcData.returnType;
     }
-
     getExceptions(): string[] {
         return this.funcData.exceptions;
     }
