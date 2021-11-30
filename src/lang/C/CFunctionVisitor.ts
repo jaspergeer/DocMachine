@@ -69,6 +69,11 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return result;
     }
 
+    /**
+     * Visit a direct declarator and extract function data
+     * @param ctx the current node in the parse tree
+     * @returns FunctionData containing parameter names of function
+     */
     visitDirectDeclarator (ctx: DirectDeclaratorContext): FunctionData {
         if (ctx.childCount === 1) {
             return {
@@ -76,6 +81,7 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
                 returnType: "",
                 exceptions: []
             };
+        /* navigate down the parse tree until we reah the parameter name */
         } else if (ctx.directDeclarator()) {
             return this.visitDirectDeclarator(ctx.directDeclarator()!);
         } else if (ctx.declarator()?.directDeclarator()) {
