@@ -41,16 +41,27 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
      * @returns FunctionData containing parameter names and return type of function
      */
     visitFunctionDefinition(ctx: FunctionDefinitionContext): FunctionData {
+        console.log(ctx);
         let result: FunctionData = this.defaultResult();
-        if (ctx.declarator().directDeclarator()) {
-            result = this.visitDirectDeclarator(ctx.declarator().directDeclarator());
+        if (ctx.declarator().directDeclarator().parameterTypeList()?.parameterList()) {
+            result = this.visitParameterList(ctx.declarator().directDeclarator().parameterTypeList()!.parameterList());
+        /* special case for single pointer parameter */
+        } else if (ctx.declarator().directDeclarator().pointer()) {
+            result = this.visitDirectDeclarator(ctx.declarator()!.directDeclarator()!);
         }
         if (ctx.declarationSpecifiers()?.declarationSpecifier()) {
-            let returnTypeCtx: DeclarationSpecifierContext | undefined = ctx.declarationSpecifiers()!.declarationSpecifier().pop();
+            console.log(ctx.declarationSpecifiers()?.declarationSpecifier());
+            let declSpecCtx: DeclarationSpecifierContext[] = ctx.declarationSpecifiers()!.declarationSpecifier();
+            let returnTypeCtx: DeclarationSpecifierContext | undefined;
+            /* special case for single pointer parameter */
+            if (declSpecCtx.length === 2 && result.paramNames.length === 1) {
+                returnTypeCtx = declSpecCtx[declSpecCtx.length - 2];
+            } else {
+                returnTypeCtx = declSpecCtx[declSpecCtx.length - 1];
+            }
             if (returnTypeCtx) {
                 result.returnType = returnTypeCtx.text;
             }
-            console.log(ctx.declarationSpecifiers()?.toStringTree());
             if (result.returnType === "void") {
                 result.returnType = "";
             }
@@ -59,36 +70,16 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     }
 
     visitDirectDeclarator (ctx: DirectDeclaratorContext): FunctionData {
-        /* if we have a list of parameters or a complex parameter parse the list */
-        if (ctx.parameterTypeList()) {
-            return this.visitParameterTypeList(ctx.parameterTypeList()!);
-        } else if (ctx.directDeclarator()) {
-            /* if we have a single simple parameter get its name */
-            if (ctx.directDeclarator()?.directDeclarator()) {
-                return {
-                    paramNames: [ctx.directDeclarator()!.text],
-                    returnType: "",
-                    exceptions: []
-                };
-            }
-            /* if we have no parameters return no parameter names */
+        if (ctx.childCount === 1) {
             return {
-                paramNames: [],
+                paramNames: [ctx.text],
                 returnType: "",
                 exceptions: []
             };
-        }
-        return this.defaultResult();
-    }
-
-    /**
-     * Visit a parameter type list
-     * @param ctx current node in parse tree
-     * @returns FunctionData containing parameter names if they exist oherwise default result
-     */
-    visitParameterTypeList (ctx: ParameterTypeListContext): FunctionData {
-        if (ctx.parameterList()) {
-            return this.visitParameterList(ctx.parameterList());
+        } else if (ctx.directDeclarator()) {
+            return this.visitDirectDeclarator(ctx.directDeclarator()!);
+        } else if (ctx.declarator()?.directDeclarator()) {
+            return this.visitDirectDeclarator(ctx.declarator()!.directDeclarator());
         }
         return this.defaultResult();
     }
@@ -101,7 +92,10 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     visitParameterList(ctx: ParameterListContext): FunctionData {
         let result: FunctionData = this.defaultResult();
         for (let dcl of ctx.parameterDeclaration()) {
-            result.paramNames.push(this.visitParameterDeclaration(dcl).paramNames[0]);
+            let paramName: string | undefined = this.visitParameterDeclaration(dcl).paramNames.pop();
+            if (paramName !== undefined) {
+                result.paramNames.push(paramName);
+            }
         }
         return result;
     }
@@ -112,25 +106,13 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
      * @returns FunctionData containing the name of this parameter
      */
     visitParameterDeclaration(ctx: ParameterDeclarationContext): FunctionData {
-        if (ctx.declarator()) {
+        if (ctx.declarator()?.directDeclarator()) {
             return {
-                paramNames: [this.getLeftmostLeaf(ctx.declarator()!).text],
+                paramNames: this.visitDirectDeclarator(ctx.declarator()!.directDeclarator()).paramNames,
                 returnType: "",
                 exceptions: []
             };
-        }
+        };
         return this.defaultResult();
     };
-
-    /**
-     * Get the leftmost leaf of a given parse tree
-     * @param ctx parse tree
-     * @returns leftmost leaf of parse tree
-     */
-    getLeftmostLeaf(ctx: ParseTree): ParseTree {
-        if (ctx.childCount > 0) {
-            return this.getLeftmostLeaf(ctx.getChild(0));
-        }
-        return ctx;
-    }
 }

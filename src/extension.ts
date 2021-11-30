@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
         let changeTokens: string[] = change.text.split(" ");
         /* we insert documentation when a DocMachine comment is created */
-        if (changeTokens[0] === "/**\n" && changeTokens[1] === "*/") {
+        if (changeTokens[0] === "/**\n") {
             const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
             let document: vscode.TextDocument = changeEvent.document;
             /* check that the document being edited is the document with changes */
