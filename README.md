@@ -24,10 +24,12 @@ Step 4) Type **/dm** and press enter. Sit back and watch DocMachine generate doc
 ## Built With
 *  [TypeScript](https://www.typescriptlang.org) - Language used to build the extension
 *  [VSCode](https://code.visualstudio.com) - Editor and API used to build the extension
+*  [vsce](https://github.com/microsoft/vscode-vsce) - VSCode extension manager used to publish releases
 *  [ANTLR](https://www.antlr.org) - Parser generator
 *  [antlr4ts](https://github.com/tunnelvisionlabs/antlr4ts) - TypeScript target for ANTLR
 *  [Node.js](https://nodejs.org/en/) - JavaScript runtime
 *  [npm](https://www.npmjs.com) - Package manager for Node.js
+*  [esbuild](https://esbuild.github.io) - JavaScript bundler
 
 ## Contributors
 *  [Jasper Geer](https://github.com/jaspergeer)

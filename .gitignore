@@ -180,8 +180,5 @@ dist
 out/*
 dist/*
 
-# Test Directory
-Src/test/*
-
 # Packages
 *.vsix
