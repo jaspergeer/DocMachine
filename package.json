@@ -3,7 +3,7 @@
   "displayName": "DocMachine",
   "publisher": "JasperGeer",
   "description": "On the fly documentation generator",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "icon": "images/icon.png",
   "galleryBanner": {
       "color": "#2E3440",
@@ -138,7 +138,8 @@
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
-    "test-compile": "tsc -p ./"
+    "test-compile": "tsc -p ./",
+    "clean": "rm -r out && rm -r dist"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",

@@ -36,16 +36,15 @@ export class CFunctionParser implements FunctionParser {
         }
 
         /* we only pass the function signature to the parser */
-        while (thisChar !== ")".charCodeAt(0)) {
+        while (thisChar !== "{".charCodeAt(0) && thisChar !== ";".charCodeAt(0)) {
             /* function signatures should not contain these characters */
-            if (thisChar === -1 || thisChar === ";".charCodeAt(0) || thisChar === "#".charCodeAt(0)) {
+            if (thisChar === -1 || thisChar === "#".charCodeAt(0)) {
                 return;
             }
             funcStr += String.fromCharCode(thisChar);
             chars.consume();
             thisChar = chars.LA(1);
         }
-        funcStr += ")";
 
         /* parse the function signature */
         chars = CharStreams.fromString(funcStr);

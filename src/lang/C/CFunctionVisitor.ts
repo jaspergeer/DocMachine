@@ -6,7 +6,7 @@
 import { FunctionData } from "../FunctionData";
 import { CVisitor } from "../../antlr/C/CVisitor";
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
-import { CompilationUnitContext, DeclaratorContext, DirectDeclaratorContext, ExternalDeclarationContext, FunctionDefinitionContext, ParameterDeclarationContext, ParameterListContext, ParameterTypeListContext, TranslationUnitContext } from "../../antlr/C/CParser";
+import { CompilationUnitContext, DeclarationSpecifierContext, DeclaratorContext, DirectDeclaratorContext, ExternalDeclarationContext, FunctionDefinitionContext, ParameterDeclarationContext, ParameterListContext, ParameterTypeListContext, TranslationUnitContext } from "../../antlr/C/CParser";
 import { ParseTree } from "antlr4ts/tree/ParseTree";
 
 export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> implements CVisitor<FunctionData> {
@@ -24,37 +24,13 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     }
 
     /**
-     * Visit a compilation unit
+     * Visit a compilation unit. This is the entry point into the parse tree.
      * @param ctx the current node in the parse tree
      * @returns data from a function definition subnode if it exists otherwise default result
      */
     visitCompilationUnit(ctx: CompilationUnitContext): FunctionData  {
-        if (ctx.translationUnit()) {
-            return this.visitTranslationUnit(ctx.translationUnit()!);
-        }
-        return this.defaultResult();
-    }
-
-    /**
-     * Visit a translation unit
-     * @param ctx the current node in the parse tree
-     * @returns data from a function definition subnode if it exists otherwise default result
-     */
-    visitTranslationUnit (ctx: TranslationUnitContext): FunctionData {
-        if (ctx.externalDeclaration()[0]) {
-            return this.visitExternalDeclaration(ctx.externalDeclaration()[0]!);
-        }
-        return this.defaultResult();
-    }
-
-    /**
-     * Visit an external declaration
-     * @param ctx the current node in the parse tree
-     * @returns data from a function definition subnode if it exists otherwise default result
-     */
-    visitExternalDeclaration (ctx: ExternalDeclarationContext): FunctionData {
-        if (ctx.functionDefinition()) {
-            return this.visitFunctionDefinition(ctx.functionDefinition()!);
+        if (ctx.translationUnit()?.externalDeclaration()[0].functionDefinition()) {
+            return this.visitFunctionDefinition(ctx.translationUnit()!.externalDeclaration()[0].functionDefinition()!);
         }
         return this.defaultResult();
     }
@@ -65,12 +41,27 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
      * @returns FunctionData containing parameter names and return type of function
      */
     visitFunctionDefinition(ctx: FunctionDefinitionContext): FunctionData {
+        console.log(ctx);
         let result: FunctionData = this.defaultResult();
-        if (ctx.declarator()) {
-            result = this.visit(ctx.declarator());
+        if (ctx.declarator().directDeclarator().parameterTypeList()?.parameterList()) {
+            result = this.visitParameterList(ctx.declarator().directDeclarator().parameterTypeList()!.parameterList());
+        /* special case for single pointer parameter */
+        } else if (ctx.declarator().directDeclarator().pointer()) {
+            result = this.visitDirectDeclarator(ctx.declarator()!.directDeclarator()!);
         }
-        if (ctx.declarationSpecifiers()) {
-            result.returnType = ctx.declarationSpecifiers()!.text;
+        if (ctx.declarationSpecifiers()?.declarationSpecifier()) {
+            console.log(ctx.declarationSpecifiers()?.declarationSpecifier());
+            let declSpecCtx: DeclarationSpecifierContext[] = ctx.declarationSpecifiers()!.declarationSpecifier();
+            let returnTypeCtx: DeclarationSpecifierContext | undefined;
+            /* special case for single pointer parameter */
+            if (declSpecCtx.length === 2 && result.paramNames.length === 1) {
+                returnTypeCtx = declSpecCtx[declSpecCtx.length - 2];
+            } else {
+                returnTypeCtx = declSpecCtx[declSpecCtx.length - 1];
+            }
+            if (returnTypeCtx) {
+                result.returnType = returnTypeCtx.text;
+            }
             if (result.returnType === "void") {
                 result.returnType = "";
             }
@@ -79,48 +70,22 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     }
 
     /**
-     * Visit a declarator
-     * @param ctx current node in the parse tree
-     * @returns FunctionData containing parameter names if they exist oherwise default result
+     * Visit a direct declarator and extract function data
+     * @param ctx the current node in the parse tree
+     * @returns FunctionData containing parameter names of function
      */
-    visitDeclarator(ctx: DeclaratorContext): FunctionData {
-        if (ctx.directDeclarator()) {
-            return this.visitDirectDeclarator(ctx.directDeclarator());
-        }
-        return this.defaultResult();
-    };
-
     visitDirectDeclarator (ctx: DirectDeclaratorContext): FunctionData {
-        /* if we have a list of parameters or a complex parameter parse the list */
-        if (ctx.parameterTypeList()) {
-            return this.visitParameterTypeList(ctx.parameterTypeList()!);
-        } else if (ctx.directDeclarator()) {
-            /* if we have a single simple parameter get its name */
-            if (ctx.directDeclarator()?.directDeclarator()) {
-                return {
-                    paramNames: [ctx.directDeclarator()!.text],
-                    returnType: "",
-                    exceptions: []
-                };
-            }
-            /* if we have no parameters return no parameter names */
+        if (ctx.childCount === 1) {
             return {
-                paramNames: [],
+                paramNames: [ctx.text],
                 returnType: "",
                 exceptions: []
             };
-        }
-        return this.defaultResult();
-    }
-
-    /**
-     * Visit a parameter type list
-     * @param ctx current node in parse tree
-     * @returns FunctionData containing parameter names if they exist oherwise default result
-     */
-    visitParameterTypeList (ctx: ParameterTypeListContext): FunctionData {
-        if (ctx.parameterList()) {
-            return this.visitParameterList(ctx.parameterList());
+        /* navigate down the parse tree until we reah the parameter name */
+        } else if (ctx.directDeclarator()) {
+            return this.visitDirectDeclarator(ctx.directDeclarator()!);
+        } else if (ctx.declarator()?.directDeclarator()) {
+            return this.visitDirectDeclarator(ctx.declarator()!.directDeclarator());
         }
         return this.defaultResult();
     }
@@ -133,7 +98,10 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     visitParameterList(ctx: ParameterListContext): FunctionData {
         let result: FunctionData = this.defaultResult();
         for (let dcl of ctx.parameterDeclaration()) {
-            result.paramNames.push(this.visitParameterDeclaration(dcl).paramNames[0]);
+            let paramName: string | undefined = this.visitParameterDeclaration(dcl).paramNames.pop();
+            if (paramName !== undefined) {
+                result.paramNames.push(paramName);
+            }
         }
         return result;
     }
@@ -144,20 +112,13 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
      * @returns FunctionData containing the name of this parameter
      */
     visitParameterDeclaration(ctx: ParameterDeclarationContext): FunctionData {
-        if (ctx.declarator()) {
+        if (ctx.declarator()?.directDeclarator()) {
             return {
-                paramNames: [this.getFirstLeaf(ctx.declarator()!).text],
+                paramNames: this.visitDirectDeclarator(ctx.declarator()!.directDeclarator()).paramNames,
                 returnType: "",
                 exceptions: []
             };
-        }
+        };
         return this.defaultResult();
     };
-
-    getFirstLeaf(ctx: ParseTree): ParseTree {
-        if (ctx.childCount > 0) {
-            return this.getFirstLeaf(ctx.getChild(0));
-        }
-        return ctx;
-    }
 }

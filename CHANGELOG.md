@@ -1,16 +1,22 @@
 # Change Log
 
+## [1.0.7]
+### Changed
+- Fixed bug where the tokens before the function return type would be included as part of the return type
+- Fixed bug where a declaration with a single pointer parameter would result in incorrect return type and parameter names
+
 ## [1.0.6]
 ### Changed
 - Fixed changelog
 - Fixed bug where the function name would be inserted as a parameter name when the function had no parameters
 - Fixed issues caused by patch 1.0.4
+
 ## [1.0.5]
-### Changed
 - New square icon
+- Fixed bug where the function name would be inserted as a parameter name when the function had no parameters
+- Fixed issues caused by patch 1.0.4
 
 ## [1.0.4]
-### Changed
 - New high resolution icon
 - Fixed bug where square brackets after parameter names would be included as part of the parameter name
 
@@ -35,5 +41,6 @@
 - Function contract generation
 - This CHANGELOG file
 - Documentation formatting can be changed through settings
+
 ### Changed
 - README updated for release
