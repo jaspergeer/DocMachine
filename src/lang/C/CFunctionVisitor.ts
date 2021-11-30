@@ -6,7 +6,7 @@
 import { FunctionData } from "../FunctionData";
 import { CVisitor } from "../../antlr/C/CVisitor";
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
-import { CompilationUnitContext, DeclaratorContext, DirectDeclaratorContext, ExternalDeclarationContext, FunctionDefinitionContext, ParameterDeclarationContext, ParameterListContext, ParameterTypeListContext, TranslationUnitContext } from "../../antlr/C/CParser";
+import { CompilationUnitContext, DeclarationSpecifierContext, DeclaratorContext, DirectDeclaratorContext, ExternalDeclarationContext, FunctionDefinitionContext, ParameterDeclarationContext, ParameterListContext, ParameterTypeListContext, TranslationUnitContext } from "../../antlr/C/CParser";
 import { ParseTree } from "antlr4ts/tree/ParseTree";
 
 export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> implements CVisitor<FunctionData> {
@@ -24,37 +24,13 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     }
 
     /**
-     * Visit a compilation unit
+     * Visit a compilation unit. This is the entry point into the parse tree.
      * @param ctx the current node in the parse tree
      * @returns data from a function definition subnode if it exists otherwise default result
      */
     visitCompilationUnit(ctx: CompilationUnitContext): FunctionData  {
-        if (ctx.translationUnit()) {
-            return this.visitTranslationUnit(ctx.translationUnit()!);
-        }
-        return this.defaultResult();
-    }
-
-    /**
-     * Visit a translation unit
-     * @param ctx the current node in the parse tree
-     * @returns data from a function definition subnode if it exists otherwise default result
-     */
-    visitTranslationUnit (ctx: TranslationUnitContext): FunctionData {
-        if (ctx.externalDeclaration()[0]) {
-            return this.visitExternalDeclaration(ctx.externalDeclaration()[0]!);
-        }
-        return this.defaultResult();
-    }
-
-    /**
-     * Visit an external declaration
-     * @param ctx the current node in the parse tree
-     * @returns data from a function definition subnode if it exists otherwise default result
-     */
-    visitExternalDeclaration (ctx: ExternalDeclarationContext): FunctionData {
-        if (ctx.functionDefinition()) {
-            return this.visitFunctionDefinition(ctx.functionDefinition()!);
+        if (ctx.translationUnit()?.externalDeclaration()[0].functionDefinition()) {
+            return this.visitFunctionDefinition(ctx.translationUnit()!.externalDeclaration()[0].functionDefinition()!);
         }
         return this.defaultResult();
     }
@@ -66,11 +42,15 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
      */
     visitFunctionDefinition(ctx: FunctionDefinitionContext): FunctionData {
         let result: FunctionData = this.defaultResult();
-        if (ctx.declarator()) {
-            result = this.visit(ctx.declarator());
+        if (ctx.declarator().directDeclarator()) {
+            result = this.visitDirectDeclarator(ctx.declarator().directDeclarator());
         }
-        if (ctx.declarationSpecifiers()) {
-            result.returnType = ctx.declarationSpecifiers()!.text;
+        if (ctx.declarationSpecifiers()?.declarationSpecifier()) {
+            let returnTypeCtx: DeclarationSpecifierContext | undefined = ctx.declarationSpecifiers()!.declarationSpecifier().pop();
+            if (returnTypeCtx) {
+                result.returnType = returnTypeCtx.text;
+            }
+            console.log(ctx.declarationSpecifiers()?.toStringTree());
             if (result.returnType === "void") {
                 result.returnType = "";
             }
@@ -78,18 +58,6 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return result;
     }
 
-    /**
-     * Visit a declarator
-     * @param ctx current node in the parse tree
-     * @returns FunctionData containing parameter names if they exist oherwise default result
-     */
-    visitDeclarator(ctx: DeclaratorContext): FunctionData {
-        if (ctx.directDeclarator()) {
-            return this.visitDirectDeclarator(ctx.directDeclarator());
-        }
-        return this.defaultResult();
-    };
-    
     visitDirectDeclarator (ctx: DirectDeclaratorContext): FunctionData {
         /* if we have a list of parameters or a complex parameter parse the list */
         if (ctx.parameterTypeList()) {
@@ -146,7 +114,7 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
     visitParameterDeclaration(ctx: ParameterDeclarationContext): FunctionData {
         if (ctx.declarator()) {
             return {
-                paramNames: [this.getFirstLeaf(ctx.declarator()!).text],
+                paramNames: [this.getLeftmostLeaf(ctx.declarator()!).text],
                 returnType: "",
                 exceptions: []
             };
@@ -154,9 +122,14 @@ export class CFunctionVisitor extends AbstractParseTreeVisitor<FunctionData> imp
         return this.defaultResult();
     };
 
-    getFirstLeaf(ctx: ParseTree): ParseTree {
+    /**
+     * Get the leftmost leaf of a given parse tree
+     * @param ctx parse tree
+     * @returns leftmost leaf of parse tree
+     */
+    getLeftmostLeaf(ctx: ParseTree): ParseTree {
         if (ctx.childCount > 0) {
-            return this.getFirstLeaf(ctx.getChild(0));
+            return this.getLeftmostLeaf(ctx.getChild(0));
         }
         return ctx;
     }

@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.0.7]
+### Changed
+- Fixed bug where the extern keyword would be included as part of the return type
+
 ## [1.0.6]
 ### Changed
 - Fixed changelog
