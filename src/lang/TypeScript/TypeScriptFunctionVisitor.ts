@@ -18,6 +18,7 @@ export class TypeScriptFunctionVisitor extends AbstractParseTreeVisitor<Function
     }
 
     visitProgram(ctx: ProgramContext): FunctionData {
+        console.log(ctx);
         if (ctx.sourceElements()?.sourceElement()[0].statement().functionDeclaration()) {
             return this.visitCallSignature(ctx.sourceElements()!.sourceElement()[0].statement().functionDeclaration()!.callSignature());
         }
