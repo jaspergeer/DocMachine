@@ -22,6 +22,11 @@ export class DMErrorStrategy extends DefaultErrorStrategy implements ANTLRErrorS
         this.invalidInput = true;
     }
 
+    protected reportUnwantedToken(recognizer: Parser): void {
+        this.invalidInput = true;
+    }
+
+
     foundInvalidText(): Boolean {
         return this.invalidInput;
     }

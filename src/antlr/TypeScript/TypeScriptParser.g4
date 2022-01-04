@@ -28,6 +28,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
+
+/** Modified by Jasper Geer */
+
 parser grammar TypeScriptParser;
 
 options {
@@ -500,7 +503,7 @@ debuggerStatement
     ;
 
 functionDeclaration
-    : Function_ Identifier callSignature ( ('{' functionBody '}') | SemiColon)
+    : Function_ Identifier typeParameters? callSignature ( ('{' functionBody '}') | SemiColon)
     ;
 
 //Ovveride ECMA

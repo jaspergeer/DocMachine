@@ -208,7 +208,7 @@ suite('TypeScript Test Suite', () => {
     vscode.window.showInformationMessage('Start TypeScript Tests.');
 
     test('Named function no parameters test', () => {
-        let input: string = "function func() {}";
+        let input: string = "function func() { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "");
         assert(parser.getExceptions().length === 0);
@@ -216,7 +216,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Named function no parameters test 1', () => {
-        let input: string = "function func(): number {}";
+        let input: string = "function func(): number { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "number");
         assert(parser.getExceptions().length === 0);
@@ -224,7 +224,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Named function one parameter test', () => {
-        let input: string = "function func(i) {}";
+        let input: string = "function func(i) { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "");
         assert(parser.getExceptions().length === 0);
@@ -233,7 +233,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Named function one parameter test 1', () => {
-        let input: string = "function func(i: number) {}";
+        let input: string = "function func(i: number) { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "");
         assert(parser.getExceptions().length === 0);
@@ -242,7 +242,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Named function one parameter test 2', () => {
-        let input: string = "function func(i: number): number {}";
+        let input: string = "function func(i: number): number { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "number");
         assert(parser.getExceptions().length === 0);
@@ -251,7 +251,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Named function multiple parameter test', () => {
-        let input: string = "function func(i, j, k) {}";
+        let input: string = "function func(i, j, k) { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "");
         assert(parser.getExceptions().length === 0);
@@ -262,7 +262,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Named function multiple parameter test 1', () => {
-        let input: string = "function func(i: number, j: boolean, k: string) {}";
+        let input: string = "function func(i: number, j: boolean, k: string) { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "");
         assert(parser.getExceptions().length === 0);
@@ -273,7 +273,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Named function multiple parameter test 2', () => {
-        let input: string = "function func(i: number, j: boolean, k: string): number {}";
+        let input: string = "function func(i: number, j: boolean, k: string): number { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "number");
         assert(parser.getExceptions().length === 0);
@@ -284,7 +284,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Named function complex test', () => {
-        let input: string = "function minimumLength<Type extends { length: number }>(obj: Type, minimum: number): Type {}";
+        let input: string = "function minimumLength<Type extends { length: number }>(obj: Type, minimum: number): Type { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "Type");
         assert(parser.getExceptions().length === 0);
@@ -294,7 +294,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Named function complex test 1', () => {
-        let input: string = "function combine<Type>(arr1: Type[], arr2: Type[]): Type[] {}";
+        let input: string = "function combine<Type>(arr1: Type[], arr2: Type[]): Type[] { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "Type[]");
         assert(parser.getExceptions().length === 0);
@@ -304,7 +304,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Named function complex test 2', () => {
-        let input: string = "function filter2<Type, Func extends (arg: Type) => boolean>(arr: Type[], func: Func): Type[] {}";
+        let input: string = "function filter2<Type, Func extends (arg: Type) => boolean>(arr: Type[], func: Func): Type[] { let foo = 1; }";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "Type[]");
         assert(parser.getExceptions().length === 0);
@@ -333,7 +333,7 @@ suite('TypeScript Test Suite', () => {
 	});  
 
     test('Anonymous function no parameters test', () => {
-        let input: string = "let func = function() {};";
+        let input: string = "let func = function() { let foo = 1; };";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "");
         assert(parser.getExceptions().length === 0);
@@ -341,7 +341,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Anonymous function one parameter test', () => {
-        let input: string = "let func = function(i) {};";
+        let input: string = "let func = function(i) { let foo = 1; };";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "");
         assert(parser.getExceptions().length === 0);
@@ -350,7 +350,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Anonymous function one parameter test 1', () => {
-        let input: string = "let func = function(i: number) {};";
+        let input: string = "let func = function(i: number) { let foo = 1; };";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "");
         assert(parser.getExceptions().length === 0);
@@ -359,7 +359,7 @@ suite('TypeScript Test Suite', () => {
 	});
 
     test('Anonymous function one parameter test 2', () => {
-        let input: string = "let func = function(i: number): number {};";
+        let input: string = "let func = function(i: number): number { let foo = 1; };";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
         assert(parser.getReturnType() === "number");
         assert(parser.getExceptions().length === 0);

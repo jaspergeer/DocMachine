@@ -19,23 +19,11 @@ export class TypeScriptFunctionParser implements FunctionParser {
             returnType: "",
             exceptions: []
         };
-        let thisChar: number = chars.LA(1);
-        let funcStr: string = "";
         
         /* don't parse if this is a comment or an invalid beginning of a function signature */
-        if (thisChar === "/".charCodeAt(0) || thisChar === "\n".charCodeAt(0)) {
+        if (chars.LA(1) === "/".charCodeAt(0) || chars.LA(1) === "\n".charCodeAt(0)) {
             return;
         }
-
-        /* we only pass the function signature to the parser */
-        while (thisChar !== "{".charCodeAt(0) && thisChar !== ";".charCodeAt(0)) {
-            funcStr += String.fromCharCode(thisChar);
-            chars.consume();
-            thisChar = chars.LA(1);
-        }
-        funcStr += ";";
-
-        chars = CharStreams.fromString(funcStr);
         
         let lexer: Lexer = new TypeScriptLexer(chars);
         let tokens: TokenStream = new CommonTokenStream(lexer);

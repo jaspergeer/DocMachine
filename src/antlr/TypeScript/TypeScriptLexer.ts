@@ -1208,4 +1208,3 @@ export class TypeScriptLexer extends TypeScriptLexerBase {
 	}
 
 }
-
