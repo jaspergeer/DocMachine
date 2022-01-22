@@ -15955,6 +15955,9 @@ export class FunctionExpressionDeclarationContext extends ParserRuleContext {
 
 
 export class SingleExpressionContext extends ParserRuleContext {
+    public functionExpressionDeclaration(): FunctionExpressionDeclarationContext {
+		return this.getRuleContext(0, FunctionExpressionDeclarationContext);
+	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
