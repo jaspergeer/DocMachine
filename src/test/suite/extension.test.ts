@@ -313,25 +313,6 @@ suite('TypeScript Test Suite', () => {
         assert(parser.getParamNames()[1] === "func");
 	});
 
-    test('Named function prototype test 1', () => {
-        let input: string = "func?: (a: boolean) => number;";
-        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
-        assert(parser.getReturnType() === "number");
-        assert(parser.getExceptions().length === 0);
-        assert(parser.getParamNames().length === 1);
-        assert(parser.getParamNames()[0] === "a");
-	});  
-
-    test('Named function prototype test 2', () => {
-        let input: string = "func?: (a: boolean, b: number) => number;";
-        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
-        assert(parser.getReturnType() === "number");
-        assert(parser.getExceptions().length === 0);
-        assert(parser.getParamNames().length === 2);
-        assert(parser.getParamNames()[0] === "a");
-        assert(parser.getParamNames()[1] === "b");
-	});  
-
     test('Anonymous function no parameters test', () => {
         let input: string = "let func = function() { let foo = 1; };";
         let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));

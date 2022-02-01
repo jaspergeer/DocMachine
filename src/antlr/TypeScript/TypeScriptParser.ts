@@ -15864,6 +15864,10 @@ export class ArgumentContext extends ParserRuleContext {
 
 
 export class ExpressionSequenceContext extends ParserRuleContext {
+    /* expression sequences can have ternary expressions as children*/
+    public ternaryExpression(): TernaryExpressionContext | undefined {
+        return this.tryGetRuleContext(0, TernaryExpressionContext);
+    }
 	public singleExpression(): SingleExpressionContext[];
 	public singleExpression(i: number): SingleExpressionContext;
 	public singleExpression(i?: number): SingleExpressionContext | SingleExpressionContext[] {
@@ -16968,6 +16972,10 @@ export class LogicalOrExpressionContext extends SingleExpressionContext {
 	}
 }
 export class TernaryExpressionContext extends SingleExpressionContext {
+    /* ternary expressions can have arrow function expressions as children*/
+    public arrowFunctionExpression(): ArrowFunctionExpressionContext {
+        return this.getRuleContext(0, ArrowFunctionExpressionContext);
+    }
 	public singleExpression(): SingleExpressionContext[];
 	public singleExpression(i: number): SingleExpressionContext;
 	public singleExpression(i?: number): SingleExpressionContext | SingleExpressionContext[] {
