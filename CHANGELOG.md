@@ -1,8 +1,12 @@
 # Change Log
 
-## [1.1.0]
+## [1.1.1]
 ### Changed
-- Added support for JavaScript and Typescript
+- Fixed JS support
+
+## [1.1.0]
+### Added
+- Support for JavaScript and Typescript
 
 ## [1.0.8]
 ### Changed
