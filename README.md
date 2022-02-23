@@ -10,6 +10,8 @@ The user can customize the format of function contracts and file headers through
 ## Supported Languages
 * C
 * C++ (through the C Parser)
+* Typescript
+* JavaScript (through the Typescript Parser)
 
 ## Getting Started
 
