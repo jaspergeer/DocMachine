@@ -312,39 +312,4 @@ suite('TypeScript Test Suite', () => {
         assert(parser.getParamNames()[0] === "arr");
         assert(parser.getParamNames()[1] === "func");
 	});
-
-    test('Anonymous function no parameters test', () => {
-        let input: string = "let func = function() { let foo = 1; };";
-        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
-        assert(parser.getReturnType() === "");
-        assert(parser.getExceptions().length === 0);
-        assert(parser.getParamNames().length === 0);
-	});
-
-    test('Anonymous function one parameter test', () => {
-        let input: string = "let func = function(i) { let foo = 1; };";
-        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
-        assert(parser.getReturnType() === "");
-        assert(parser.getExceptions().length === 0);
-        assert(parser.getParamNames().length === 1);
-        assert(parser.getParamNames()[0] === "i");
-	});
-
-    test('Anonymous function one parameter test 1', () => {
-        let input: string = "let func = function(i: number) { let foo = 1; };";
-        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
-        assert(parser.getReturnType() === "");
-        assert(parser.getExceptions().length === 0);
-        assert(parser.getParamNames().length === 1);
-        assert(parser.getParamNames()[0] === "i");
-	});
-
-    test('Anonymous function one parameter test 2', () => {
-        let input: string = "let func = function(i: number): number { let foo = 1; };";
-        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
-        assert(parser.getReturnType() === "number");
-        assert(parser.getExceptions().length === 0);
-        assert(parser.getParamNames().length === 1);
-        assert(parser.getParamNames()[0] === "i");
-	});
 });

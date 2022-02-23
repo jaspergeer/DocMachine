@@ -1,6 +1,6 @@
 import { AbstractParseTreeVisitor } from "antlr4ts/tree/AbstractParseTreeVisitor";
 import { ParseTree } from "antlr4ts/tree/ParseTree";
-import { ArrowFunctionDeclarationContext, CallSignatureContext, FormalParameterListContext, FunctionDeclarationContext, FunctionExpressionDeclarationContext, InitializerContext, ParameterListContext, ProgramContext, SingleExpressionContext, VariableDeclarationContext, VariableDeclarationListContext } from "../../antlr/TypeScript/TypeScriptParser";
+import { CallSignatureContext, FormalParameterListContext, FunctionExpressionDeclarationContext, ParameterListContext, ProgramContext } from "../../antlr/TypeScript/TypeScriptParser";
 import { TypeScriptParserVisitor } from "../../antlr/TypeScript/TypeScriptParserVisitor";
 import { FunctionData } from "../FunctionData";
 
@@ -23,15 +23,7 @@ export class TypeScriptFunctionVisitor extends AbstractParseTreeVisitor<Function
      * @returns parameter names and return type of the first function definition encountered
      */
     visitProgram(ctx: ProgramContext): FunctionData {
-        
-        /* special case for anonymous functions */
-        if (ctx.sourceElements()?.sourceElement()[0].statement().variableStatement()?.variableDeclarationList()) {
-            return this.visitVariableDeclarationList(ctx.sourceElements()!.sourceElement()[0].statement().variableStatement()!.variableDeclarationList()!)
-        } else if (ctx.sourceElements()?.sourceElement()[0].statement().arrowFunctionDeclaration()) {
-            return this.visitArrowFunctionDeclaration(ctx.sourceElements()?.sourceElement()[0].statement().arrowFunctionDeclaration()!);
-        /* standard case for function declarations */
-        } else if (ctx.sourceElements()?.sourceElement().find(e => e.statement().functionDeclaration())!.statement().functionDeclaration()) {
-            console.log(ctx.sourceElements()?.sourceElement().find(e => e.statement().functionDeclaration())!.statement().functionDeclaration());
+        if (ctx.sourceElements()?.sourceElement().find(e => e.statement().functionDeclaration())!.statement().functionDeclaration()) {
             return this.visitCallSignature(ctx.sourceElements()?.sourceElement().find(e => e.statement().functionDeclaration())!.statement().functionDeclaration()!.callSignature()!);
         }
         return this.defaultResult();
@@ -87,25 +79,6 @@ export class TypeScriptFunctionVisitor extends AbstractParseTreeVisitor<Function
     }
 
     /**
-     * Visit a variable declaration list. This is the special case in which we parse an anonymous function.
-     * @param ctx current node in the parse tree
-     * @returns parameter names and return type of the first function definition encountered
-     */
-    visitVariableDeclarationList(ctx: VariableDeclarationListContext): FunctionData {
-        let result: FunctionData = this.defaultResult();
-        /* visit each variable declaration in the list and return the data from the first function declaration if it exists */
-        for (let decl of ctx.variableDeclaration()) {
-            if (decl.singleExpression().pop()?.functionExpressionDeclaration()) {
-                result = this.visitFunctionExpressionDeclaration(decl.singleExpression().pop()!.functionExpressionDeclaration());
-            }
-            if (result !== this.defaultResult()) {
-                return result;
-            }
-        }
-        return result;
-    }
-
-    /**
      * Visit a function expression declaration and extract function data
      * @param ctx current node in the parse tree
      * @returns return type and parameter names of function
@@ -130,20 +103,6 @@ export class TypeScriptFunctionVisitor extends AbstractParseTreeVisitor<Function
         let result = this.defaultResult();
         for (let param of ctx.formalParameterArg()) {
             result.paramNames.push(param.identifierOrKeyWord().text);
-        }
-        return result;
-    }
-
-    /**
-     * Visit a arrow function declaration and extract parameter names and return type
-     * @param ctx current node in the parse tree
-     * @returns return type and parameter names of the function
-     */
-    visitArrowFunctionDeclaration(ctx: ArrowFunctionDeclarationContext): FunctionData {
-        console.log(ctx);
-        let result = this.defaultResult();
-        if (ctx.arrowFunctionParameters().formalParameterList()) {
-            result.paramNames = this.visitFormalParameterList(ctx.arrowFunctionParameters().formalParameterList()!).paramNames;
         }
         return result;
     }
