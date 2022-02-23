@@ -26,6 +26,7 @@ export function activate(context: vscode.ExtensionContext): void {
     funcParsers.set("c", CFunctionParser);
     funcParsers.set("cpp", CFunctionParser);
     funcParsers.set("typescript", TypeScriptFunctionParser);
+    funcParsers.set("javascript", TypeScriptFunctionParser);
 
     vscode.workspace.onDidChangeTextDocument(changeEvent => {
         let change: vscode.TextDocumentContentChangeEvent = changeEvent.contentChanges[0];

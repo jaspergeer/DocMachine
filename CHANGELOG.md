@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.1]
+### Changed
+- Added support for JavaScript and Typescript
+
 ## [1.0.8]
 ### Changed
 - Fixed bug where where a declaration with multiple declaration specifiers before a declaration with a single pointer parameter would result in incorrect return type and parameter names
