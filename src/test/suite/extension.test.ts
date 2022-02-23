@@ -5,6 +5,7 @@ import * as assert from 'assert';
 // as well as import your extension to test it
 import * as vscode from 'vscode';
 import { CFunctionParser } from '../../lang/C/CFunctionParser';
+import { TypeScriptFunctionParser } from '../../lang/TypeScript/TypeScriptFunctionParser';
 
 suite('C Test Suite', () => {
 	vscode.window.showInformationMessage('Start C Tests.');
@@ -200,5 +201,115 @@ suite('C Test Suite', () => {
         assert(parser.getParamNames().length === 2);
         assert(parser.getParamNames()[0] === "i");
         assert(parser.getParamNames()[1] === "j");
+	});
+});
+
+suite('TypeScript Test Suite', () => {
+    vscode.window.showInformationMessage('Start TypeScript Tests.');
+
+    test('Named function no parameters test', () => {
+        let input: string = "function func() { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 0);
+	});
+
+    test('Named function no parameters test 1', () => {
+        let input: string = "function func(): number { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "number");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 0);
+	});
+
+    test('Named function one parameter test', () => {
+        let input: string = "function func(i) { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 1);
+        assert(parser.getParamNames()[0] === "i");
+	});
+
+    test('Named function one parameter test 1', () => {
+        let input: string = "function func(i: number) { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 1);
+        assert(parser.getParamNames()[0] === "i");
+	});
+
+    test('Named function one parameter test 2', () => {
+        let input: string = "function func(i: number): number { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "number");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 1);
+        assert(parser.getParamNames()[0] === "i");
+	});
+
+    test('Named function multiple parameter test', () => {
+        let input: string = "function func(i, j, k) { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 3);
+        assert(parser.getParamNames()[0] === "i");
+        assert(parser.getParamNames()[1] === "j");
+        assert(parser.getParamNames()[2] === "k");
+	});
+
+    test('Named function multiple parameter test 1', () => {
+        let input: string = "function func(i: number, j: boolean, k: string) { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 3);
+        assert(parser.getParamNames()[0] === "i");
+        assert(parser.getParamNames()[1] === "j");
+        assert(parser.getParamNames()[2] === "k");
+	});
+
+    test('Named function multiple parameter test 2', () => {
+        let input: string = "function func(i: number, j: boolean, k: string): number { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "number");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 3);
+        assert(parser.getParamNames()[0] === "i");
+        assert(parser.getParamNames()[1] === "j");
+        assert(parser.getParamNames()[2] === "k");
+	});
+
+    test('Named function complex test', () => {
+        let input: string = "function minimumLength<Type extends { length: number }>(obj: Type, minimum: number): Type { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "Type");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 2);
+        assert(parser.getParamNames()[0] === "obj");
+        assert(parser.getParamNames()[1] === "minimum");
+	});
+
+    test('Named function complex test 1', () => {
+        let input: string = "function combine<Type>(arr1: Type[], arr2: Type[]): Type[] { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "Type[]");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 2);
+        assert(parser.getParamNames()[0] === "arr1");
+        assert(parser.getParamNames()[1] === "arr2");
+	});
+
+    test('Named function complex test 2', () => {
+        let input: string = "function filter2<Type, Func extends (arg: Type) => boolean>(arr: Type[], func: Func): Type[] { let foo = 1; }";
+        let parser: TypeScriptFunctionParser = new TypeScriptFunctionParser(CharStreams.fromString(input));
+        assert(parser.getReturnType() === "Type[]");
+        assert(parser.getExceptions().length === 0);
+        assert(parser.getParamNames().length === 2);
+        assert(parser.getParamNames()[0] === "arr");
+        assert(parser.getParamNames()[1] === "func");
 	});
 });
