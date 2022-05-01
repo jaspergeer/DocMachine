@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.1.2]
+### Changed
+- C++ support removed temporarily
+
 ## [1.1.1]
 ### Changed
 - Fixed JS support

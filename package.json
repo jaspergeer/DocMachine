@@ -3,7 +3,7 @@
   "displayName": "DocMachine",
   "publisher": "JasperGeer",
   "description": "On the fly documentation generator",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "icon": "images/icon.png",
   "galleryBanner": {
       "color": "#2E3440",
@@ -26,10 +26,6 @@
     "snippets": [
       {
         "language": "c",
-        "path": "./snippets.code-snippets"
-      },
-      {
-        "language": "cpp",
         "path": "./snippets.code-snippets"
       },
       {
