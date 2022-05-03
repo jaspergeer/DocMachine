@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.1.3]
+### Changed
+- Removed C++ activation event
+
 ## [1.1.2]
 ### Changed
 - C++ support removed temporarily
